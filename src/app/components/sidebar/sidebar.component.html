@@ -1,0 +1,64 @@
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="index3.html" class="brand-link">
+      <img src="https://botw-pd.s3.amazonaws.com/styles/logo-thumbnail/s3/0014/0528/brand.gif?itok=Qod7yOBO" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light"><b>TCM</b></span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar font-weight-light">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a routerLink="\" class="d-block">Hilel HADJALI</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+       
+        
+          
+          
+          <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fa fa-edit"></i>
+              <p>
+                User Management
+                <i class="fa fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a  routerLink="/users" routerLinkActive="active" class="nav-link">
+                  <i class="fa fa-user-o nav-icon"></i>
+                  <p>User List</p>
+                </a>
+              </li>
+              <li *ngIf="_userService.roleMatch(['Administrator'])" class="nav-item">
+                <a  routerLink="/sign-up" routerLinkActive="active" class="nav-link">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>Create User</p>
+                </a>
+              </li>
+          
+            </ul>
+          </li>
+     
+         
+          
+       
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

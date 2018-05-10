@@ -1,0 +1,104 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>General Form</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item">
+            <a href="#">Home</a>
+          </li>
+          <li class="breadcrumb-item active">General Form</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- left column -->
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">{{userSgid?'Edit': 'Add new'}} user</h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form #userRegistrationForm="ngForm" (ngSubmit)="OnSubmit(userRegistrationForm)">
+            <div class="card-body">
+              <div class="form-group" [class.has-error]="SgId.touched && SgId.invalid">
+                <label for="exampleInputPassword1">SgId</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fa fa-user"></i>
+                    </span>
+                  </div>
+                  <input [disabled]="editMode" UpperCaseText minlength="8" maxlength="8" type="text" name="SgId" #SgId="ngModel" [(ngModel)]="user.SgId"
+                    required class="form-control" placeholder="SgId">
+                  <div class="input-group-append">
+                    <button type="button" (click)="sgIDChanged()" class="btn btn-primary">search</button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1" data-error="required field">Email address</label>
+                <input type="email" readonly="readonly" name="Email" #Email="ngModel" [(ngModel)]="user.Email" required class="form-control validate"
+                  placeholder="Enter email">
+
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputPassword1">FirstName</label>
+                <input type="text" readonly="readonly" name="FirstName" #FirstName="ngModel" [(ngModel)]="user.FirstName" required class="form-control"
+                  placeholder="FirstName">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">LastName</label>
+                <input type="text" readonly="readonly" name="LastName" #LastName="ngModel" [(ngModel)]="user.LastName" required class="form-control"
+                  placeholder="LastName">
+              </div>
+
+              <div class="form-group">
+                <label>Role</label>
+                <div *ngFor="let item of roles;let i=index">
+                  <p-checkbox required name="Roles" #Roles="ngModel" value="{{item.Name}}" label="{{item.Name}}" [(ngModel)]="user.Roles" inputId="{{item.Id}}"></p-checkbox>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Business Unit</label>
+                <div *ngFor="let item of businessUnits;let i=index">
+                  <p-checkbox required name="BusinessUnits" #BusinessUnits="ngModel" value="{{item.Id}}" label="{{item.Name}}" [(ngModel)]="user.BusinessUnitsId" inputId="{{item.Id}}"></p-checkbox>
+                </div>
+              </div>
+              {{user.Roles}} 
+              {{user.BusinessUnitsId}}
+            </div>
+            <!-- /.card-body -->
+
+            <div class="card-footer">
+              <button [disabled]="!userRegistrationForm.valid" type="submit" class="btn btn-success">{{editMode ?'Update': 'Submit'}}</button>
+              <button routerLink='/users' class="btn btn-primary">Cancel</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.card -->
+
+
+      </div>
+      <!--/.col (left) -->
+
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->

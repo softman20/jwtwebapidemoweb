@@ -1,0 +1,370 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Simple Tables</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Simple Tables</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Responsive Hover Table</h3>
+    
+                <div class="card-tools">
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+    
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                  <div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
+                      <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                      <input #gb type="text" pInputText size="50" placeholder="Global Filter">
+                  </div>
+                  <p-dataTable [editable]="true" class="table table-hover " [value]="cars" [rows]="10" [paginator]="true" [globalFilter]="gb" #dt>
+                      <p-header>List of Cars</p-header>
+                      <p-column field="vin" [editable]="true"  header="Vin (startsWith)" [filter]="true" filterPlaceholder="Search"></p-column>
+                      <p-column field="year" header="Year ({{yearFilter||'No Filter'}})" [filter]="true" filterMatchMode="equals">
+                          <ng-template pTemplate="filter" let-col>
+                              <i class="fa fa-close" (click)="yearFilter=null;dt.filter(null,col.field,col.filterMatchMode)"></i>
+                              <p-slider [style]="{'width':'100%','margin-top':'8px'}" [(ngModel)]="yearFilter" [min]="1970" [max]="2010" (onChange)="onYearChange($event, dt, col)"></p-slider>
+                          </ng-template>
+                      </p-column>
+                      <p-column field="brand" header="Brand (Custom)" [filter]="true" filterMatchMode="equals">
+                          <ng-template pTemplate="filter" let-col>
+                              <p-dropdown [options]="brands" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+                          </ng-template>
+                      </p-column>
+                      <p-column field="color" header="Color (Custom)" [filter]="true" filterMatchMode="in">
+                          <ng-template pTemplate="filter" let-col>
+                              <p-multiSelect [options]="colors" defaultLabel="All Colors" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-multiSelect>
+                          </ng-template>
+                      </p-column>
+                  </p-dataTable>
+
+                <table class="table table-hover">
+                  <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Reason</th>
+                  </tr>
+                  <tr>
+                    <td>183</td>
+                    <td>John Doe</td>
+                    <td>11-7-2014</td>
+                    <td><span class="tag tag-success">Approved</span></td>
+                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                  </tr>
+                  <tr>
+                    <td>219</td>
+                    <td>Alexander Pierce</td>
+                    <td>11-7-2014</td>
+                    <td><span class="tag tag-warning">Pending</span></td>
+                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                  </tr>
+                  <tr>
+                    <td>657</td>
+                    <td>Bob Doe</td>
+                    <td>11-7-2014</td>
+                    <td><span class="tag tag-primary">Approved</span></td>
+                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                  </tr>
+                  <tr>
+                    <td>175</td>
+                    <td>Mike Doe</td>
+                    <td>11-7-2014</td>
+                    <td><span class="tag tag-danger">Denied</span></td>
+                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                  </tr>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div><!-- /.row -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Bordered Table</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table class="table table-bordered">
+              <tr>
+                <th style="width: 10px">#</th>
+                <th>Task</th>
+                <th>Progress</th>
+                <th style="width: 40px">Label</th>
+              </tr>
+              <tr>
+                <td>1.</td>
+                <td>Update software</td>
+                <td>
+                  <div class="progress progress-xs">
+                    <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-danger">55%</span></td>
+              </tr>
+              <tr>
+                <td>2.</td>
+                <td>Clean database</td>
+                <td>
+                  <div class="progress progress-xs">
+                    <div class="progress-bar bg-warning" style="width: 70%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-warning">70%</span></td>
+              </tr>
+              <tr>
+                <td>3.</td>
+                <td>Cron job running</td>
+                <td>
+                  <div class="progress progress-xs progress-striped active">
+                    <div class="progress-bar bg-primary" style="width: 30%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-primary">30%</span></td>
+              </tr>
+              <tr>
+                <td>4.</td>
+                <td>Fix and squish bugs</td>
+                <td>
+                  <div class="progress progress-xs progress-striped active">
+                    <div class="progress-bar bg-success" style="width: 90%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-success">90%</span></td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer clearfix">
+            <ul class="pagination pagination-sm m-0 float-right">
+              <li><a href="#">&laquo;</a></li>
+              <li><a href="#">1</a></li>
+              <li><a href="#">2</a></li>
+              <li><a href="#">3</a></li>
+              <li><a href="#">&raquo;</a></li>
+            </ul>
+          </div>
+        </div>
+        <!-- /.card -->
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Condensed Full Width Table</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <table class="table table-condensed">
+              <tr>
+                <th style="width: 10px">#</th>
+                <th>Task</th>
+                <th>Progress</th>
+                <th style="width: 40px">Label</th>
+              </tr>
+              <tr>
+                <td>1.</td>
+                <td>Update software</td>
+                <td>
+                  <div class="progress progress-xs">
+                    <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-danger">55%</span></td>
+              </tr>
+              <tr>
+                <td>2.</td>
+                <td>Clean database</td>
+                <td>
+                  <div class="progress progress-xs">
+                    <div class="progress-bar bg-warning" style="width: 70%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-warning">70%</span></td>
+              </tr>
+              <tr>
+                <td>3.</td>
+                <td>Cron job running</td>
+                <td>
+                  <div class="progress progress-xs progress-striped active">
+                    <div class="progress-bar bg-primary" style="width: 30%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-primary">30%</span></td>
+              </tr>
+              <tr>
+                <td>4.</td>
+                <td>Fix and squish bugs</td>
+                <td>
+                  <div class="progress progress-xs progress-striped active">
+                    <div class="progress-bar bg-success" style="width: 90%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-success">90%</span></td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Simple Full Width Table</h3>
+
+            <div class="card-tools">
+              <ul class="pagination pagination-sm m-0 float-right">
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">&raquo;</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <table class="table">
+              <tr>
+                <th style="width: 10px">#</th>
+                <th>Task</th>
+                <th>Progress</th>
+                <th style="width: 40px">Label</th>
+              </tr>
+              <tr>
+                <td>1.</td>
+                <td>Update software</td>
+                <td>
+                  <div class="progress progress-xs">
+                    <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-danger">55%</span></td>
+              </tr>
+              <tr>
+                <td>2.</td>
+                <td>Clean database</td>
+                <td>
+                  <div class="progress progress-xs">
+                    <div class="progress-bar bg-warning" style="width: 70%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-warning">70%</span></td>
+              </tr>
+              <tr>
+                <td>3.</td>
+                <td>Cron job running</td>
+                <td>
+                  <div class="progress progress-xs progress-striped active">
+                    <div class="progress-bar bg-primary" style="width: 30%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-primary">30%</span></td>
+              </tr>
+              <tr>
+                <td>4.</td>
+                <td>Fix and squish bugs</td>
+                <td>
+                  <div class="progress progress-xs progress-striped active">
+                    <div class="progress-bar bg-success" style="width: 90%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-success">90%</span></td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Striped Full Width Table</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <table class="table table-striped">
+              <tr>
+                <th style="width: 10px">#</th>
+                <th>Task</th>
+                <th>Progress</th>
+                <th style="width: 40px">Label</th>
+              </tr>
+              <tr>
+                <td>1.</td>
+                <td>Update software</td>
+                <td>
+                  <div class="progress progress-xs">
+                    <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-danger">55%</span></td>
+              </tr>
+              <tr>
+                <td>2.</td>
+                <td>Clean database</td>
+                <td>
+                  <div class="progress progress-xs">
+                    <div class="progress-bar bg-warning" style="width: 70%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-warning">70%</span></td>
+              </tr>
+              <tr>
+                <td>3.</td>
+                <td>Cron job running</td>
+                <td>
+                  <div class="progress progress-xs progress-striped active">
+                    <div class="progress-bar bg-primary" style="width: 30%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-primary">30%</span></td>
+              </tr>
+              <tr>
+                <td>4.</td>
+                <td>Fix and squish bugs</td>
+                <td>
+                  <div class="progress progress-xs progress-striped active">
+                    <div class="progress-bar bg-success" style="width: 90%"></div>
+                  </div>
+                </td>
+                <td><span class="badge bg-success">90%</span></td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  
+  </div><!-- /.container-fluid -->
+</section>
