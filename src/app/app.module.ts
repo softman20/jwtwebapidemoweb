@@ -9,7 +9,7 @@ import { TestComponent } from './components/test/test.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TablesComponent } from './components/tables/tables.component';
-import { DataTableModule, SliderModule,CheckboxModule, DropdownModule, MultiSelectModule,ProgressSpinnerModule, ConfirmationService, ConfirmDialogModule } from 'primeng/primeng';
+import { DataTableModule, SliderModule,CheckboxModule, DropdownModule, MultiSelectModule,ProgressSpinnerModule, ConfirmationService, ConfirmDialogModule, AutoCompleteModule } from 'primeng/primeng';
 import { CarService } from './services/car.service';
 import { RouterModule, Routes } from '@angular/router';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
@@ -29,6 +29,8 @@ import { HomeComponent } from './components/home/home.component';
 import { AuthService } from './auth/auth.service';
 import { ForbiddenComponent } from './components/forbidden/forbidden.component';
 import { ArrayToFieldPipe } from './pipes/array-to-ids.pipe';
+import { BusinessUnitService } from './services/business-unit.service';
+import { UserResolve } from './resolvers/user.resolve';
 
 // export function authorizationServiceFactory(injector: Injector) {
 //   return new AuthService(injector);
@@ -66,9 +68,12 @@ import { ArrayToFieldPipe } from './pipes/array-to-ids.pipe';
     SweetAlert2Module.forRoot(),
     NgProgressModule,
     ProgressSpinnerModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    AutoCompleteModule
   ],
   providers: [CarService, UserService,ConfirmationService,AuthGuard,HomeGuard,AuthenticationService,
+    BusinessUnitService,
+    UserResolve,
     { provide: HTTP_INTERCEPTORS, useClass: NgProgressInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthService, multi: true }
   ],

@@ -9,13 +9,14 @@ import { OauthCompletedComponent } from "./components/oauth-completed/oauth-comp
 import { HomeGuard } from "./auth/home.guard";
 import { HomeComponent } from "./components/home/home.component";
 import { ForbiddenComponent } from "./components/forbidden/forbidden.component";
+import { UserResolve } from "./resolvers/user.resolve";
 
 const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
-    { path: 'oauth-completed', component: OauthCompletedComponent },
+    { path: 'oauth-completed', component: OauthCompletedComponent },    
     { path: 'forbidden', component: ForbiddenComponent,canActivate:[AuthGuard] },
     {
-        path: '', component: LayoutComponent, canActivate: [HomeGuard, AuthGuard],
+        path: '', component: LayoutComponent, canActivate: [HomeGuard, AuthGuard],resolve:{user:UserResolve},
         children: [
             { path: '', component: HomeComponent },
             { path: 'users', component: UserListComponent },
