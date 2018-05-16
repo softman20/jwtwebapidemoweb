@@ -10,6 +10,7 @@ import { HomeGuard } from "./auth/home.guard";
 import { HomeComponent } from "./components/home/home.component";
 import { ForbiddenComponent } from "./components/forbidden/forbidden.component";
 import { UserResolve } from "./resolvers/user.resolve";
+import { ValidationRulesComponent } from "./components/admin/validation-rules/validation-rules.component";
 
 const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -21,7 +22,8 @@ const appRoutes: Routes = [
             { path: '', component: HomeComponent },
             { path: 'users', component: UserListComponent },
             { path: 'sign-up', component: SignUpComponent,canActivate: [AuthGuard], data: { roles: ['Administrator'] } },
-            { path: 'user/:id', component: SignUpComponent }
+            { path: 'user/:id', component: SignUpComponent },
+            {path:'validationrules',component:ValidationRulesComponent}
 
         ]
     },

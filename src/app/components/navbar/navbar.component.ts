@@ -68,6 +68,14 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     // alert(0);
-    this.authenticationService.logout();
+    this.confirmationService.confirm({
+      header:'Close session',
+      message:'Are you sur to want to logout ?',
+      accept:()=>{
+        this.toastr.info("Closing your session ...");
+        this.authenticationService.logout();
+      }
+    })
+  
   }
 }

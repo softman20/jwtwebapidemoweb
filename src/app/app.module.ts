@@ -31,6 +31,7 @@ import { ForbiddenComponent } from './components/forbidden/forbidden.component';
 import { ArrayToFieldPipe } from './pipes/array-to-ids.pipe';
 import { BusinessUnitService } from './services/business-unit.service';
 import { UserResolve } from './resolvers/user.resolve';
+import { ValidationRulesComponent } from './components/admin/validation-rules/validation-rules.component';
 
 // export function authorizationServiceFactory(injector: Injector) {
 //   return new AuthService(injector);
@@ -50,7 +51,8 @@ import { UserResolve } from './resolvers/user.resolve';
     OauthCompletedComponent,
     HomeComponent,
     ForbiddenComponent,
-    ArrayToFieldPipe
+    ArrayToFieldPipe,
+    ValidationRulesComponent
   ],
   imports: [
     BrowserModule,
@@ -70,6 +72,7 @@ import { UserResolve } from './resolvers/user.resolve';
     ProgressSpinnerModule,
     ConfirmDialogModule,
     AutoCompleteModule
+    
   ],
   providers: [CarService, UserService,ConfirmationService,AuthGuard,HomeGuard,AuthenticationService,
     BusinessUnitService,
