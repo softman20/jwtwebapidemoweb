@@ -1,3 +1,65 @@
-<p>
-  validation-rules works!
-</p>
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title">
+              Validation Rules Management
+            </h3>
+          </div>
+          <form class="form-horizontal" #formValidationRules="ngForm">
+            <div class="card-body">
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label for="processType" class=" control-label">Proccess Type
+                    <b class="text-danger" *ngIf="processType.touched && processType.invalid">*</b>
+                  </label>
+                  <div>
+                    <p-selectButton name="processType" (onChange)="processTypeChanged()" [options]="processTypes" #processType="ngModel" [(ngModel)]="selectedProcessType"
+                      required></p-selectButton>                   
+                    <span class="text-danger" *ngIf="processType.touched && processType.invalid">Process Type is required</span>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="companyCode" class=" control-label">Company Code
+                    <b class="text-danger" *ngIf="companyCode.touched && companyCode.invalid">*</b>
+                  </label>
+                  <div>
+                    <p-dropdown [options]="companies" #companyCode="ngModel" name="companyCode" [(ngModel)]="selectedCompanyCode" filter="true" placeholder="Select a Company"
+                      optionLabel="Name" [showClear]="true" required></p-dropdown>
+
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label for="" class=" control-label">Account Group</label>
+                  <div class=" ">
+                    <select name="" class="form-control" required>
+                      <option value="" disabled>Supplier</option>
+
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group col-sm-6">
+                  <label for="requestType" class=" control-label">Request Type
+                    <b class="text-danger" *ngIf="requestType.touched && requestType.invalid">*</b>
+                  </label>
+                  <div>
+                    <p-selectButton name="requestType" [options]="requestTypes" #requestType="ngModel" [(ngModel)]="selectedRequestType" required></p-selectButton>
+
+                    <span class="text-danger" *ngIf="requestType.touched && requestType.invalid">Request Type is required</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button [disabled]="!formValidationRules.valid" type="submit" class="btn btn-info float-right">View</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

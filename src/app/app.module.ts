@@ -9,7 +9,7 @@ import { TestComponent } from './components/test/test.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TablesComponent } from './components/tables/tables.component';
-import { DataTableModule, SliderModule,CheckboxModule, DropdownModule, MultiSelectModule,ProgressSpinnerModule, ConfirmationService, ConfirmDialogModule, AutoCompleteModule } from 'primeng/primeng';
+import { DataTableModule, SliderModule,CheckboxModule, DropdownModule, MultiSelectModule,ProgressSpinnerModule, ConfirmationService, ConfirmDialogModule, AutoCompleteModule, SelectButtonModule } from 'primeng/primeng';
 import { CarService } from './services/car.service';
 import { RouterModule, Routes } from '@angular/router';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
@@ -32,6 +32,7 @@ import { ArrayToFieldPipe } from './pipes/array-to-ids.pipe';
 import { BusinessUnitService } from './services/business-unit.service';
 import { UserResolve } from './resolvers/user.resolve';
 import { ValidationRulesComponent } from './components/admin/validation-rules/validation-rules.component';
+import { CompanyService } from './services/company.service';
 
 // export function authorizationServiceFactory(injector: Injector) {
 //   return new AuthService(injector);
@@ -71,11 +72,12 @@ import { ValidationRulesComponent } from './components/admin/validation-rules/va
     NgProgressModule,
     ProgressSpinnerModule,
     ConfirmDialogModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    SelectButtonModule
     
   ],
   providers: [CarService, UserService,ConfirmationService,AuthGuard,HomeGuard,AuthenticationService,
-    BusinessUnitService,
+    BusinessUnitService,CompanyService,
     UserResolve,
     { provide: HTTP_INTERCEPTORS, useClass: NgProgressInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthService, multi: true }

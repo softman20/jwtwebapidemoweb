@@ -44,7 +44,7 @@ export class NavbarComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this._userService.setBusinessUnit(BusinessUnit.Id);
-        this.toastr.info(this._userService.getBusinessUnit().Name);
+        this.toastr.info(`${this._userService.getBusinessUnit().Name} is Active now !`);
       } else {
         this.selectedBusinessUnit = this.oldBusinessUnit;
       }
