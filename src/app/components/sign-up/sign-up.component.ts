@@ -14,7 +14,7 @@ import { Authorization } from '../../models/authorization';
 import { Role } from '../../models/role';
 import { Master } from '../../models/master';
 import { CompanyService } from '../../services/company.service';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem, ConfirmationService } from 'primeng/primeng';
 
 @Component({
   selector: 'app-sign-up',
@@ -30,12 +30,12 @@ export class SignUpComponent extends BaseComponent implements OnInit {
   editMode: boolean = false;
   displayDialog: boolean;
   authorization: Authorization = new Authorization();
-  selectedAuthorization: Authorization;
-  processTypes: SelectItem[] = [{ label: 'Supplier', value: '1', icon: 'fa fa-users' }, { label: 'Customer', value: '2', icon: 'fa fa-user' }];
+
+  processTypes: SelectItem[] = [{ label: 'All', value: '0', icon: 'fa fa-globe' }, { label: 'Supplier', value: '1', icon: 'fa fa-users' }, { label: 'Customer', value: '2', icon: 'fa fa-user' }];
 
 
   constructor(private _companyService: CompanyService, private _userService: UserService, private router: Router,
-    private _activatedRoute: ActivatedRoute, private toastr: ToastrService) { super(); }
+    private _activatedRoute: ActivatedRoute, private toastr: ToastrService, private _confirmationService: ConfirmationService) { super(); }
 
   ngOnInit() {
     this.resetForm();
@@ -51,25 +51,31 @@ export class SignUpComponent extends BaseComponent implements OnInit {
       }
       this.getRoles();
       this.getBusinessUnits();
-      // this.getComanies();
+
+      //this.getComanies(true);
     });
 
 
   }
   getComanies() {
-    if (this.authorization && this.authorization.BusinessUnit) {
-      this.authorization.CompanyCode=null;
-      this._companyService.getCompaniesByBU(this.authorization.BusinessUnit.Id).subscribe(
-        (data: any) => {
-          this.companies = data;
-        }
-      );
-    } else this.companies = new Array<Master>();
+    this.authorization.ProcessTypeId = '0';
+    
+    let buID = 0;
+    if (this.authorization && this.authorization.BusinessUnit)
+      buID = this.authorization.BusinessUnit.Id;
+
+    this._companyService.getCompaniesByBU(buID).subscribe(
+      (data: any) => {
+        this.companies = data;
+        this.authorization.CompanyCode=this.companies.find(e=>e.Id==0);
+      }
+    );
   }
   getBusinessUnits() {
     this._userService.getAllBusinessUnits().subscribe(
       (data: BusinessUnit[]) => {
         this.businessUnits = data;
+        this.getComanies();
       }
     );
   }
@@ -160,20 +166,89 @@ export class SignUpComponent extends BaseComponent implements OnInit {
   }
 
   showDialogToAdd() {
-    // this.newCar = true;
+  
     this.authorization = new Authorization();
-
-    this.companies = new Array<Master>();
+    this.authorization.BusinessUnit=this.businessUnits.find(e=>e.Id==0);
+    this.authorization.CompanyCode=this.companies.find(e=>e.Id==0);
+    // this.companies = new Array<Master>();
     this.displayDialog = true;
   }
   cancelAddAuthorization() {
 
   }
+  companyCodeChanged() {
+    this.authorization.ProcessTypeId = '0';
+  }
+  // checkIfAuthorizationExist(): boolean {
+  //   let exist: boolean = false;;
+  //   //check if exist Process Type level
+  //   if (this.authorization.BusinessUnit && this.authorization.CompanyCode && this.authorization.ProcessTypeId != '0') {
+  //     //all values selected
+  //     if (this.user.Authorizations.find(e => e.BusinessUnit ? e.BusinessUnit.Id == this.authorization.BusinessUnit.Id : true && e.CompanyCode ? e.CompanyCode.Id == this.authorization.CompanyCode.Id : true
+  //       && (e.ProcessTypeId == this.authorization.ProcessTypeId || e.ProcessTypeId == '0') && e.Role.Id == this.authorization.Role.Id))
+  //       exist = true;
+  //   }//no process type 
+  //   else if (this.authorization.BusinessUnit && this.authorization.CompanyCode && this.authorization.ProcessTypeId == '0') {
+  //     if (this.user.Authorizations.find(e => e.BusinessUnit ? e.BusinessUnit.Id == this.authorization.BusinessUnit.Id : true && e.CompanyCode ? e.CompanyCode.Id == this.authorization.CompanyCode.Id : true
+  //       && e.Role.Id == this.authorization.Role.Id))
+  //       exist = true;
+  //   }//no company code 
+  //   else if (this.authorization.BusinessUnit && !this.authorization.CompanyCode) {
+  //     if (this.user.Authorizations.find(e => (e.BusinessUnit ? e.BusinessUnit.Id == this.authorization.BusinessUnit.Id : true) && e.Role.Id == this.authorization.Role.Id))
+  //       exist = true;
+  //   }
+  //   //no Business Unit
+  //   else if (!this.authorization.BusinessUnit) {
+  //     if (this.user.Authorizations.find(e => e.Role.Id == this.authorization.Role.Id))
+  //       exist = true;
+  //   }
+
+  //   return exist;
+  // }
+  checkIfAuthorizationExist(): boolean {
+    let exist: boolean = false;;
+    //check if exist Process Type level
+    if (this.authorization.BusinessUnit && this.authorization.CompanyCode && this.authorization.ProcessTypeId != '0') {
+      //all values selected
+      if (this.user.Authorizations.find(e => (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id == 0) 
+      && (e.CompanyCode.Id == this.authorization.CompanyCode.Id || e.CompanyCode.Id==0 )
+        && (e.ProcessTypeId == this.authorization.ProcessTypeId || e.ProcessTypeId == '0') && e.Role.Id == this.authorization.Role.Id))
+        exist = true;
+    }//no process type 
+    else if (this.authorization.BusinessUnit && this.authorization.CompanyCode && this.authorization.ProcessTypeId == '0') {
+      if (this.user.Authorizations.find(e => (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id==0 ) 
+      && (e.CompanyCode.Id == this.authorization.CompanyCode.Id || e.CompanyCode.Id==0)
+        && e.Role.Id == this.authorization.Role.Id))
+        exist = true;
+    }//no company code 
+    else if (this.authorization.BusinessUnit && !this.authorization.CompanyCode) {
+      if (this.user.Authorizations.find(e => (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id==0) && e.Role.Id == this.authorization.Role.Id))
+        exist = true;
+    }
+    //no Business Unit
+    else if (!this.authorization.BusinessUnit) {
+      if (this.user.Authorizations.find(e => e.Role.Id == this.authorization.Role.Id))
+        exist = true;
+    }
+
+    return exist;
+  }
   addAuthorization() {
 
-    //check if exist
-    if (this.user.Authorizations.find(e => e.BusinessUnit.Id == this.authorization.BusinessUnit.Id && e.CompanyCode.Id == this.authorization.CompanyCode.Id
-      && e.ProcessTypeId == this.authorization.ProcessTypeId && e.Role.Id == this.authorization.Role.Id))
+    // //it the new authorizaiton BU is set to All, check only with role
+    // if (!this.authorization.BusinessUnit || this.user.Authorizations.find(e => !e.BusinessUnit)) {
+    //   if (this.user.Authorizations.find(e => e.Role.Id == this.authorization.Role.Id))
+    //     exist = true;
+    // }//else check company code level
+    // else if (!this.authorization.CompanyCode || this.user.Authorizations.find(e => !e.CompanyCode)) {
+    //   if (this.user.Authorizations.find(e => e.Role.Id == this.authorization.Role.Id && e.CompanyCode.Id == this.authorization.CompanyCode.Id))
+    //     exist = true;
+    // }
+    // else if (this.user.Authorizations.find(e => e.BusinessUnit.Id == this.authorization.BusinessUnit.Id && e.CompanyCode.Id == this.authorization.CompanyCode.Id
+    //   && e.ProcessTypeId == this.authorization.ProcessTypeId && e.Role.Id == this.authorization.Role.Id))
+    //   exist = true;
+    
+    if (false)
       this.toastr.warning('This authorization already exist !');
     else {
 
@@ -188,13 +263,17 @@ export class SignUpComponent extends BaseComponent implements OnInit {
     }
   }
 
-  deleteAuthorization() {
-    if (this.selectedAuthorization) {
-      this.user.Authorizations = this.user.Authorizations.filter(item => item !== this.selectedAuthorization);
-      this.toastr.info('deleted');
-    } else {
-      this.toastr.warning("Please select a row !");
-    }
+  deleteAuthorization(authorization: Authorization) {
+    this._confirmationService.confirm({
+      message: `Are you sure to want to delete this ${authorization.BusinessUnit.Name} authorization ?`,
+      header: 'Delete Confirmation',
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.user.Authorizations = this.user.Authorizations.filter(item => item !== authorization);
+        this.toastr.info('Delete successfully !');
+      }
+    });
+
   }
 }
 
