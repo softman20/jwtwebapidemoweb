@@ -10,6 +10,11 @@ import { error } from 'protractor';
 import { HttpErrorResponse } from '@angular/common/http';
 import { BaseComponent } from '../base/base.component';
 import { BusinessUnit } from '../../models/business-unit';
+import { Authorization } from '../../models/authorization';
+import { Role } from '../../models/role';
+import { Master } from '../../models/master';
+import { CompanyService } from '../../services/company.service';
+import { SelectItem } from 'primeng/primeng';
 
 @Component({
   selector: 'app-sign-up',
@@ -18,12 +23,19 @@ import { BusinessUnit } from '../../models/business-unit';
 })
 export class SignUpComponent extends BaseComponent implements OnInit {
   user: User;
-  roles: any[];
+  roles: Role[];
   businessUnits: BusinessUnit[];
+  companies: Master[];
   userSgid: string;
   editMode: boolean = false;
-  constructor(private _userService: UserService, private router: Router,
-    private _activatedRoute: ActivatedRoute, private toastr: ToastrService) {super(); }
+  displayDialog: boolean;
+  authorization: Authorization = new Authorization();
+  selectedAuthorization: Authorization;
+  processTypes: SelectItem[] = [{ label: 'Supplier', value: '1', icon: 'fa fa-users' }, { label: 'Customer', value: '2', icon: 'fa fa-user' }];
+
+
+  constructor(private _companyService: CompanyService, private _userService: UserService, private router: Router,
+    private _activatedRoute: ActivatedRoute, private toastr: ToastrService) { super(); }
 
   ngOnInit() {
     this.resetForm();
@@ -32,25 +44,36 @@ export class SignUpComponent extends BaseComponent implements OnInit {
       if (this.userSgid) {
         this._userService.getUser(this.userSgid).subscribe(
           (userData) => {
-            this.user = userData; 
+            this.user = userData;
             this.editMode = true;
           }
         );
       }
       this.getRoles();
       this.getBusinessUnits();
+      // this.getComanies();
     });
 
 
   }
+  getComanies() {
+    if (this.authorization && this.authorization.BusinessUnit) {
+      this.authorization.CompanyCode=null;
+      this._companyService.getCompaniesByBU(this.authorization.BusinessUnit.Id).subscribe(
+        (data: any) => {
+          this.companies = data;
+        }
+      );
+    } else this.companies = new Array<Master>();
+  }
   getBusinessUnits() {
     this._userService.getAllBusinessUnits().subscribe(
-      (data:BusinessUnit[]) => { 
+      (data: BusinessUnit[]) => {
         this.businessUnits = data;
-       }
+      }
     );
   }
- 
+
   getRoles() {
     this._userService.getAllRoles().subscribe(
       (data: any) => {
@@ -89,9 +112,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
       });
   }
 
-  updateSelectedRoles(index) {
-    this.roles[index].selected = !this.roles[index].selected;
-  }
+
   resetForm(form?: NgForm) {
     if (form != null)
       form.resetForm();
@@ -135,6 +156,44 @@ export class SignUpComponent extends BaseComponent implements OnInit {
         );
 
       }
+    }
+  }
+
+  showDialogToAdd() {
+    // this.newCar = true;
+    this.authorization = new Authorization();
+
+    this.companies = new Array<Master>();
+    this.displayDialog = true;
+  }
+  cancelAddAuthorization() {
+
+  }
+  addAuthorization() {
+
+    //check if exist
+    if (this.user.Authorizations.find(e => e.BusinessUnit.Id == this.authorization.BusinessUnit.Id && e.CompanyCode.Id == this.authorization.CompanyCode.Id
+      && e.ProcessTypeId == this.authorization.ProcessTypeId && e.Role.Id == this.authorization.Role.Id))
+      this.toastr.warning('This authorization already exist !');
+    else {
+
+      //get ProcessType
+      this.authorization.ProcessType = this.processTypes.find(e => e.value == this.authorization.ProcessTypeId);
+
+      let authorizations = [...this.user.Authorizations];
+      authorizations.push(this.authorization);
+      this.user.Authorizations = authorizations;
+      this.authorization = new Authorization();
+      this.displayDialog = false;
+    }
+  }
+
+  deleteAuthorization() {
+    if (this.selectedAuthorization) {
+      this.user.Authorizations = this.user.Authorizations.filter(item => item !== this.selectedAuthorization);
+      this.toastr.info('deleted');
+    } else {
+      this.toastr.warning("Please select a row !");
     }
   }
 }

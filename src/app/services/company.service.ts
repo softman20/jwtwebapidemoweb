@@ -11,4 +11,8 @@ export class CompanyService {
   getCompanies(businessUnitId:number, processTypeId:string):Observable<Array<any>>{
     return this._http.get<Array<any>>(environment.API_ENDPOINT+`/api/company/${businessUnitId}/${processTypeId}`);
   }
+
+  getCompaniesByBU(businessUnitId:number):Observable<Array<any>>{
+    return this._http.get<Array<any>>(environment.API_ENDPOINT+`/api/company/GetByBU/${businessUnitId}`);
+  }
 }

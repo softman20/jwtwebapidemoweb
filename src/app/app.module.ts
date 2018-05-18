@@ -9,7 +9,7 @@ import { TestComponent } from './components/test/test.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TablesComponent } from './components/tables/tables.component';
-import { DataTableModule, SliderModule,CheckboxModule, DropdownModule, MultiSelectModule,ProgressSpinnerModule, ConfirmationService, ConfirmDialogModule, AutoCompleteModule, SelectButtonModule } from 'primeng/primeng';
+import { DataTableModule, SliderModule,CheckboxModule, DropdownModule, MultiSelectModule,ProgressSpinnerModule, ConfirmationService, ConfirmDialogModule, AutoCompleteModule, SelectButtonModule, InputSwitchModule, DialogModule } from 'primeng/primeng';
 import { CarService } from './services/car.service';
 import { RouterModule, Routes } from '@angular/router';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
@@ -73,7 +73,9 @@ import { CompanyService } from './services/company.service';
     ProgressSpinnerModule,
     ConfirmDialogModule,
     AutoCompleteModule,
-    SelectButtonModule
+    SelectButtonModule,
+    InputSwitchModule,
+    DialogModule
     
   ],
   providers: [CarService, UserService,ConfirmationService,AuthGuard,HomeGuard,AuthenticationService,
