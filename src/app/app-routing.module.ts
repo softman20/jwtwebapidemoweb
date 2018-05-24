@@ -21,7 +21,7 @@ const appRoutes: Routes = [
         children: [
             { path: '', component: HomeComponent },
             { path: 'users', component: UserListComponent },
-            { path: 'sign-up', component: SignUpComponent,canActivate: [AuthGuard], data: { roles: ['Administrator'] } },
+            { path: 'sign-up', component: SignUpComponent,canActivate: [AuthGuard], data: {/* roles: ['Administrator']*/ } },
             { path: 'user/:id', component: SignUpComponent },
             {path:'validationrules',component:ValidationRulesComponent}
 

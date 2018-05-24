@@ -18,6 +18,9 @@ import { BaseComponent } from '../../base/base.component';
 export class UserListComponent extends BaseComponent implements OnInit {
   users: User[] = [];
   loading: boolean = false;
+  selectedUser:User;
+  displayUserAuthorizationsDetails:boolean=false;
+
   constructor(private _userService: UserService, private toastr: ToastrService,
     private confirmationService: ConfirmationService,
     private _router: Router, private ngProgress: NgProgress) { super();}
@@ -96,5 +99,10 @@ export class UserListComponent extends BaseComponent implements OnInit {
       },
         Error => { console.log(Error.message); }
       );
+  }
+
+  showUserAuthorizationsDetails(user:User){
+    this.selectedUser=user;
+   // this.displayUserAuthorizationsDetails=true;
   }
 }

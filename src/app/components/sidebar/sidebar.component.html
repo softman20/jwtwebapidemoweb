@@ -26,7 +26,8 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-        <li *ngIf="_userService.roleMatch(['Administrator'])" class="nav-item has-treeview menu-open">
+               <!-- <li *ngIf="_userService.roleMatch(['Administrator'])" class="nav-item has-treeview menu-open"> -->
+        <li  class="nav-item has-treeview menu-open">
           <a  class="nav-link" routerLinkActive="active" [ngClass]="{'active': usersActive.isActive || (createUserActive.isActive) }">
             <i class="nav-icon fa fa-edit"></i>
             <p>

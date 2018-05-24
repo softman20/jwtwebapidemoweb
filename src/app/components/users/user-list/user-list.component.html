@@ -29,31 +29,25 @@
           <!-- /.card-header -->
           <div class="card-body">
 
-            <p-dataTable loadingIcon="fa fa-spinner" [value]="users" [loading]="loading">
-             
+            <p-dataTable #dtUsers loadingIcon="fa fa-spinner" [value]="users" [loading]="loading" expandableRows="true">
               <p-column field="FirstName" header="FirstName"></p-column>
               <p-column field="LastName" header="LastName"></p-column>
               <p-column field="Email" header="Email"></p-column>
               <p-column field="SgId" header="SgId"></p-column>
-
-              <p-column  header="roles">
-                <ng-template let-user="rowData" pTemplate="body">
-                <div *ngFor="let role of user.Roles">
-                  {{role}}
-                </div>  
-                </ng-template>
-              </p-column>
-              <p-column  header="BU">
-                  <ng-template let-user="rowData" pTemplate="body">
-                  <div *ngFor="let bu of user.BusinessUnits">
-                    {{bu.Name}}
-                  </div>  
-                  </ng-template>
-                </p-column>
               <p-column header="CreatedDate">
                 <ng-template let-user="rowData" pTemplate="body">{{user.CreatedDate | date}}</ng-template>
               </p-column>
-              <p-column>
+              <p-column styleClass="text-center">
+                <ng-template pTemplate="header">
+                  <button type="button" pButton icon="fa-shirtsinbulk"></button>
+                </ng-template>
+                <ng-template let-user="rowData" pTemplate="body">
+                  <button type="button" appendTo="body" data-toggle="modal" data-target="#userAuthorizationsModal" pButton (click)="showUserAuthorizationsDetails(user)"
+                    icon="fa-search"></button>
+                </ng-template>
+              </p-column>
+
+              <p-column styleClass="col-button">
                 <ng-template let-user="rowData" pTemplate="body">
                   <a (click)="editUser(user.SgId)" class="btn ">
                     <i class="fa fa-pencil-square-o text-success"></i>
@@ -62,12 +56,36 @@
                     <i class="fa fa-trash-o text-danger"></i>
                   </a>
                   <a (click)="deleteUserSwal(user)" class="btn">
-                      <i class="fa fa-trash-o text-danger"></i>
-                    </a>
+                    <i class="fa fa-trash-o text-danger"></i>
+                  </a>
                 </ng-template>
               </p-column>
             </p-dataTable>
-           
+            <!-- User Authorizations details -->
+            <div class="modal fade" id="userAuthorizationsModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Authorizations Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p-dataTable #authorizations *ngIf="selectedUser" appendTo="ngHere" [value]="selectedUser.Authorizations" [rows]="10" [paginator]="true">
+                      <p-column header="BU" field="BusinessUnit.Name" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
+                      <p-column field="Role.Name" header="ROLE" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
+                      <p-column field="CompanyCode.Name" header="Company Code" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
+                      <p-column field="ProcessType.Name" header="Process Type" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
+                    </p-dataTable>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
           <!-- /.card-body -->
           <div class="card-footer clearfix">

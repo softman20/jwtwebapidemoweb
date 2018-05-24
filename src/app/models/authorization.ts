@@ -9,13 +9,13 @@ export class Authorization {
     BusinessUnit: BusinessUnit;
     CompanyCode: Master;
     ProcessType: SelectItem;
-    ProcessTypeId: string='0';
+    ProcessTypeId: number=-1;
 
     constructor()
     {
         this.BusinessUnit=new BusinessUnit();
-        this.BusinessUnit.Id=0;
+        this.BusinessUnit.Id=-1;
         this.CompanyCode=new Master();
-        this.CompanyCode.Id=0;
+        this.CompanyCode.Id=-1;
     }
 }

@@ -83,16 +83,10 @@
 
               <div class="form-group">
                 <label for="userRights">Authorizations</label>
-                <p-dataTable #authorizations [value]="user.Authorizations" [rows]="10" [paginator]="true"    >
-                  <p-column header="BU" field="BusinessUnit.Name" [filter]="true" filterPlaceholder="Search" [sortable]="true">
-                  
-                  </p-column>
+                <p-dataTable #authorizations [value]="user.Authorizations" [rows]="10" [paginator]="true">
+                  <p-column header="BU" field="BusinessUnit.Name" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                   <p-column field="Role.Name" header="ROLE" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
-                  <p-column field="CompanyCode.Name" header="Company Code" [filter]="true" filterPlaceholder="Search" [sortable]="true">
-                    <ng-template let-authorization="rowData" pTemplate="body">
-                      {{authorization.CompanyCode?authorization.CompanyCode.Name:'All'}}
-                    </ng-template>
-                  </p-column>
+                  <p-column field="CompanyCode.Name" header="Company Code" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                   <p-column field="ProcessType.label" header="Process Type" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                   <p-column>
                     <ng-template let-authorization="rowData" pTemplate="body">
@@ -122,30 +116,29 @@
                         <div class="form-group col-md-3">
                           <label for="authBusinessUnit">Business Unit</label>
                           <div class="">
-                            <p-dropdown appendTo="body" [style]="{'width':'220px'}" name="authBusinessUnit" (onChange)="getComanies()"
-                              [(ngModel)]="authorization.BusinessUnit" [options]="businessUnits" inputId="Id"
-                              optionLabel="Name" [filter]="true"></p-dropdown>
-                              {{authorization.BusinessUnit?.Id}}
+                            <p-dropdown appendTo="body" [style]="{'width':'220px'}" name="authBusinessUnit" (onChange)="getComanies()" [(ngModel)]="authorization.BusinessUnit"
+                              [options]="businessUnits" inputId="Id" optionLabel="Name" [filter]="true"></p-dropdown>
+                            {{authorization.BusinessUnit?.Id}}
                           </div>
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="authCompanyCode">Company Code</label>
                           <div class="">
-                            <p-dropdown appendTo="body" [style]="{'width':'230px'}" name="authCompanyCode" [(ngModel)]="authorization.CompanyCode"
-                             (onChange)="companyCodeChanged()"  [options]="companies"  inputId="Id" optionLabel="Name" [filter]="true"></p-dropdown>
-                             {{authorization.CompanyCode?.Id}}
+                            <p-dropdown appendTo="body" [style]="{'width':'230px'}" name="authCompanyCode" [(ngModel)]="authorization.CompanyCode" (onChange)="companyCodeChanged()"
+                              [options]="companies" inputId="Id" optionLabel="Name" [filter]="true"></p-dropdown>
+                            {{authorization.CompanyCode?.Id}}
                           </div>
                         </div>
- 
+
                         <div class="form-group col-md-4">
                           <label for="processType" class=" control-label">Proccess Type
                             <b class="text-danger" *ngIf="processType.touched && processType.invalid">*</b>
                           </label>
                           <div>
                             <p-selectButton name="processType" [options]="processTypes" #processType="ngModel" [(ngModel)]="authorization.ProcessTypeId"
-                              [disabled]="!authorization.CompanyCode" required></p-selectButton>
-                              {{authorization.ProcessTypeId}}
+                              [disabled]="authorization.CompanyCode?.Id===-1" required></p-selectButton>
+                            {{authorization.ProcessTypeId}}
                             <span class="text-danger" *ngIf="processType.touched && processType.invalid">Process Type is required</span>
                           </div>
                         </div>

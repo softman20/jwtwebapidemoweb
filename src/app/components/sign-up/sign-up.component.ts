@@ -1,20 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../models/user.model';
 import { NgForm } from '@angular/forms';
-import { UserService } from '../../services/user.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import swal from 'sweetalert2';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { forEach } from '@angular/router/src/utils/collection';
-import { error } from 'protractor';
-import { HttpErrorResponse } from '@angular/common/http';
-import { BaseComponent } from '../base/base.component';
-import { BusinessUnit } from '../../models/business-unit';
+import { ConfirmationService, SelectItem } from 'primeng/primeng';
 import { Authorization } from '../../models/authorization';
-import { Role } from '../../models/role';
+import { BusinessUnit } from '../../models/business-unit';
 import { Master } from '../../models/master';
+import { Role } from '../../models/role';
+import { User } from '../../models/user.model';
 import { CompanyService } from '../../services/company.service';
-import { SelectItem, ConfirmationService } from 'primeng/primeng';
+import { UserService } from '../../services/user.service';
+import { BaseComponent } from '../base/base.component';
 
 @Component({
   selector: 'app-sign-up',
@@ -31,7 +27,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
   displayDialog: boolean;
   authorization: Authorization = new Authorization();
 
-  processTypes: SelectItem[] = [{ label: 'All', value: '0', icon: 'fa fa-globe' }, { label: 'Supplier', value: '1', icon: 'fa fa-users' }, { label: 'Customer', value: '2', icon: 'fa fa-user' }];
+  processTypes: SelectItem[] = [{ label: 'All', value: '-1', icon: 'fa fa-globe' }, { label: 'Supplier', value: '1', icon: 'fa fa-users' }, { label: 'Customer', value: '2', icon: 'fa fa-user' }];
 
 
   constructor(private _companyService: CompanyService, private _userService: UserService, private router: Router,
@@ -58,16 +54,12 @@ export class SignUpComponent extends BaseComponent implements OnInit {
 
   }
   getComanies() {
-    this.authorization.ProcessTypeId = '0';
-    
-    let buID = 0;
-    if (this.authorization && this.authorization.BusinessUnit)
-      buID = this.authorization.BusinessUnit.Id;
+    this.authorization.ProcessTypeId = -1;
 
-    this._companyService.getCompaniesByBU(buID).subscribe(
+    this._companyService.getCompaniesByBU(this.authorization.BusinessUnit.Id).subscribe(
       (data: any) => {
         this.companies = data;
-        this.authorization.CompanyCode=this.companies.find(e=>e.Id==0);
+        this.authorization.CompanyCode = this.companies.find(e => e.Id == -1);
       }
     );
   }
@@ -88,12 +80,14 @@ export class SignUpComponent extends BaseComponent implements OnInit {
     )
   }
   OnSubmit(form: NgForm) {
-    //edit
-    if (this.editMode) {
-      this.updateUser();
-    } else {
-      this.addUser();
-    }
+    if (this.user.Authorizations.length > 0) {
+      //edit
+      if (this.editMode) {
+        this.updateUser();
+      } else {
+        this.addUser();
+      }
+    } else this.toastr.info("Please add some authorizations...");
   }
   addUser() {
     this._userService.registerUser(this.user)
@@ -166,68 +160,47 @@ export class SignUpComponent extends BaseComponent implements OnInit {
   }
 
   showDialogToAdd() {
-  
+
     this.authorization = new Authorization();
-    this.authorization.BusinessUnit=this.businessUnits.find(e=>e.Id==0);
-    this.authorization.CompanyCode=this.companies.find(e=>e.Id==0);
-    // this.companies = new Array<Master>();
+    this.authorization.BusinessUnit = this.businessUnits.find(e => e.Id == -1);
+    this.authorization.CompanyCode = this.companies.find(e => e.Id == -1);
+    this.getComanies();
     this.displayDialog = true;
   }
   cancelAddAuthorization() {
 
   }
   companyCodeChanged() {
-    this.authorization.ProcessTypeId = '0';
+    this.authorization.ProcessTypeId = -1;
   }
-  // checkIfAuthorizationExist(): boolean {
-  //   let exist: boolean = false;;
-  //   //check if exist Process Type level
-  //   if (this.authorization.BusinessUnit && this.authorization.CompanyCode && this.authorization.ProcessTypeId != '0') {
-  //     //all values selected
-  //     if (this.user.Authorizations.find(e => e.BusinessUnit ? e.BusinessUnit.Id == this.authorization.BusinessUnit.Id : true && e.CompanyCode ? e.CompanyCode.Id == this.authorization.CompanyCode.Id : true
-  //       && (e.ProcessTypeId == this.authorization.ProcessTypeId || e.ProcessTypeId == '0') && e.Role.Id == this.authorization.Role.Id))
-  //       exist = true;
-  //   }//no process type 
-  //   else if (this.authorization.BusinessUnit && this.authorization.CompanyCode && this.authorization.ProcessTypeId == '0') {
-  //     if (this.user.Authorizations.find(e => e.BusinessUnit ? e.BusinessUnit.Id == this.authorization.BusinessUnit.Id : true && e.CompanyCode ? e.CompanyCode.Id == this.authorization.CompanyCode.Id : true
-  //       && e.Role.Id == this.authorization.Role.Id))
-  //       exist = true;
-  //   }//no company code 
-  //   else if (this.authorization.BusinessUnit && !this.authorization.CompanyCode) {
-  //     if (this.user.Authorizations.find(e => (e.BusinessUnit ? e.BusinessUnit.Id == this.authorization.BusinessUnit.Id : true) && e.Role.Id == this.authorization.Role.Id))
-  //       exist = true;
-  //   }
-  //   //no Business Unit
-  //   else if (!this.authorization.BusinessUnit) {
-  //     if (this.user.Authorizations.find(e => e.Role.Id == this.authorization.Role.Id))
-  //       exist = true;
-  //   }
 
-  //   return exist;
-  // }
   checkIfAuthorizationExist(): boolean {
-    let exist: boolean = false;;
+    let exist: boolean = false;
+
+
     //check if exist Process Type level
-    if (this.authorization.BusinessUnit && this.authorization.CompanyCode && this.authorization.ProcessTypeId != '0') {
-      //all values selected
-      if (this.user.Authorizations.find(e => (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id == 0) 
-      && (e.CompanyCode.Id == this.authorization.CompanyCode.Id || e.CompanyCode.Id==0 )
-        && (e.ProcessTypeId == this.authorization.ProcessTypeId || e.ProcessTypeId == '0') && e.Role.Id == this.authorization.Role.Id))
-        exist = true;
-    }//no process type 
-    else if (this.authorization.BusinessUnit && this.authorization.CompanyCode && this.authorization.ProcessTypeId == '0') {
-      if (this.user.Authorizations.find(e => (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id==0 ) 
-      && (e.CompanyCode.Id == this.authorization.CompanyCode.Id || e.CompanyCode.Id==0)
+    if (this.authorization.CompanyCode.Id != -1) {
+      if (this.user.Authorizations.find(e =>
+        (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id == -1)
+        && (e.CompanyCode.Id == this.authorization.CompanyCode.Id || e.CompanyCode.Id == -1)
+        && (e.ProcessTypeId == this.authorization.ProcessTypeId || e.ProcessTypeId == -1)
         && e.Role.Id == this.authorization.Role.Id))
         exist = true;
-    }//no company code 
-    else if (this.authorization.BusinessUnit && !this.authorization.CompanyCode) {
-      if (this.user.Authorizations.find(e => (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id==0) && e.Role.Id == this.authorization.Role.Id))
+    }
+    //no company code 
+    else if (this.authorization.BusinessUnit.Id != -1) {
+      if (this.user.Authorizations.find(e =>
+        (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id == -1)
+        && (e.CompanyCode.Id == this.authorization.CompanyCode.Id || e.CompanyCode.Id == -1)
+        && e.Role.Id == this.authorization.Role.Id))
         exist = true;
     }
     //no Business Unit
-    else if (!this.authorization.BusinessUnit) {
-      if (this.user.Authorizations.find(e => e.Role.Id == this.authorization.Role.Id))
+    else //if (this.authorization.BusinessUnit.Id == 0) {
+    {
+      if (this.user.Authorizations.find(e =>
+        (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id == -1)
+        && e.Role.Id == this.authorization.Role.Id))
         exist = true;
     }
 
@@ -235,32 +208,39 @@ export class SignUpComponent extends BaseComponent implements OnInit {
   }
   addAuthorization() {
 
-    // //it the new authorizaiton BU is set to All, check only with role
-    // if (!this.authorization.BusinessUnit || this.user.Authorizations.find(e => !e.BusinessUnit)) {
-    //   if (this.user.Authorizations.find(e => e.Role.Id == this.authorization.Role.Id))
-    //     exist = true;
-    // }//else check company code level
-    // else if (!this.authorization.CompanyCode || this.user.Authorizations.find(e => !e.CompanyCode)) {
-    //   if (this.user.Authorizations.find(e => e.Role.Id == this.authorization.Role.Id && e.CompanyCode.Id == this.authorization.CompanyCode.Id))
-    //     exist = true;
-    // }
-    // else if (this.user.Authorizations.find(e => e.BusinessUnit.Id == this.authorization.BusinessUnit.Id && e.CompanyCode.Id == this.authorization.CompanyCode.Id
-    //   && e.ProcessTypeId == this.authorization.ProcessTypeId && e.Role.Id == this.authorization.Role.Id))
-    //   exist = true;
-    
-    if (false)
+    if (this.checkIfAuthorizationExist())
       this.toastr.warning('This authorization already exist !');
     else {
 
       //get ProcessType
       this.authorization.ProcessType = this.processTypes.find(e => e.value == this.authorization.ProcessTypeId);
-
+      //delete sub authorizations if exist
+      this.deleteSubAuthorizationIfExist();
       let authorizations = [...this.user.Authorizations];
       authorizations.push(this.authorization);
+
       this.user.Authorizations = authorizations;
       this.authorization = new Authorization();
       this.displayDialog = false;
     }
+  }
+
+  deleteSubAuthorizationIfExist() {
+    let subAuthorizaitons = new Array<Authorization>();
+    //if new authorization is on BU level, delete all BU for same role
+    if (this.authorization.BusinessUnit.Id == -1) {
+      subAuthorizaitons = this.user.Authorizations.filter(e => e.Role.Id == this.authorization.Role.Id);
+    } //no company code 
+    else if (this.authorization.CompanyCode.Id == -1) {
+      subAuthorizaitons = this.user.Authorizations.filter(e =>
+        e.BusinessUnit.Id == this.authorization.BusinessUnit.Id && e.Role.Id == this.authorization.Role.Id);
+    }// no process type
+    else if (this.authorization.ProcessTypeId == -1) {
+      subAuthorizaitons = this.user.Authorizations.filter(e =>
+        e.CompanyCode.Id == this.authorization.CompanyCode.Id &&
+        e.BusinessUnit.Id == this.authorization.BusinessUnit.Id && e.Role.Id == this.authorization.Role.Id);
+    }
+    this.user.Authorizations = this.user.Authorizations.filter(e => !subAuthorizaitons.find(a => a === e));
   }
 
   deleteAuthorization(authorization: Authorization) {
@@ -270,7 +250,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
       icon: 'fa fa-trash',
       accept: () => {
         this.user.Authorizations = this.user.Authorizations.filter(item => item !== authorization);
-        this.toastr.info('Delete successfully !');
+        this.toastr.success('Authorization Deleted successfully !');
       }
     });
 
