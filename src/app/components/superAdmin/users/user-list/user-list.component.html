@@ -29,7 +29,7 @@
           <!-- /.card-header -->
           <div class="card-body">
 
-            <p-dataTable #dtUsers loadingIcon="fa fa-spinner" [value]="users" [loading]="loading" expandableRows="true">
+            <p-dataTable #dtUsers [value]="users" loadingIcon="fa fa-spinner" [loading]="loading">
               <p-column field="FirstName" header="FirstName"></p-column>
               <p-column field="LastName" header="LastName"></p-column>
               <p-column field="Email" header="Email"></p-column>

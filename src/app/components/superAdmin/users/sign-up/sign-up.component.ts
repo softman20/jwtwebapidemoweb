@@ -3,14 +3,16 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmationService, SelectItem } from 'primeng/primeng';
-import { Authorization } from '../../models/authorization';
-import { BusinessUnit } from '../../models/business-unit';
-import { Master } from '../../models/master';
-import { Role } from '../../models/role';
-import { User } from '../../models/user.model';
-import { CompanyService } from '../../services/company.service';
-import { UserService } from '../../services/user.service';
-import { BaseComponent } from '../base/base.component';
+import { Authorization } from '../../../../models/authorization';
+import { BusinessUnit } from '../../../../models/business-unit';
+import { Master } from '../../../../models/master';
+import { Role } from '../../../../models/role';
+import { User } from '../../../../models/user.model';
+import { CompanyService } from '../../../../services/company.service';
+import { UserService } from '../../../../services/user.service';
+import { BaseComponent } from '../../../base/base.component';
+import { Helpers } from '../../../../helpers/helpers';
+import { StaticDataModels } from '../../../../dataModels/staticDataModels';
 
 @Component({
   selector: 'app-sign-up',
@@ -26,9 +28,8 @@ export class SignUpComponent extends BaseComponent implements OnInit {
   editMode: boolean = false;
   displayDialog: boolean;
   authorization: Authorization = new Authorization();
-
-  processTypes: SelectItem[] = [{ label: 'All', value: '-1', icon: 'fa fa-globe' }, { label: 'Supplier', value: '1', icon: 'fa fa-users' }, { label: 'Customer', value: '2', icon: 'fa fa-user' }];
-
+  loading: boolean = false;
+  processTypes: Array<SelectItem> = StaticDataModels.processTypes;
 
   constructor(private _companyService: CompanyService, private _userService: UserService, private router: Router,
     private _activatedRoute: ActivatedRoute, private toastr: ToastrService, private _confirmationService: ConfirmationService) { super(); }
@@ -38,10 +39,12 @@ export class SignUpComponent extends BaseComponent implements OnInit {
     this._activatedRoute.params.subscribe(params => {
       this.userSgid = params['id'];
       if (this.userSgid) {
+        this.loading = true;
         this._userService.getUser(this.userSgid).subscribe(
           (userData) => {
             this.user = userData;
             this.editMode = true;
+            this.loading = false;
           }
         );
       }
@@ -213,7 +216,8 @@ export class SignUpComponent extends BaseComponent implements OnInit {
     else {
 
       //get ProcessType
-      this.authorization.ProcessType = this.processTypes.find(e => e.value == this.authorization.ProcessTypeId);
+   
+      this.authorization.ProcessType = Helpers.convertLabelToMaster(this.processTypes).find(e => e.Id == this.authorization.ProcessTypeId);
       //delete sub authorizations if exist
       this.deleteSubAuthorizationIfExist();
       let authorizations = [...this.user.Authorizations];
@@ -255,6 +259,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
     });
 
   }
+
 }
 
 

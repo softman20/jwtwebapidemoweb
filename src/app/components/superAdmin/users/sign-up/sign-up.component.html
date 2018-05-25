@@ -83,11 +83,11 @@
 
               <div class="form-group">
                 <label for="userRights">Authorizations</label>
-                <p-dataTable #authorizations [value]="user.Authorizations" [rows]="10" [paginator]="true">
+                <p-dataTable #authorizations [value]="user.Authorizations" loadingIcon="fa fa-spinner" [loading]="loading" [rows]="10" [paginator]="true">
                   <p-column header="BU" field="BusinessUnit.Name" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                   <p-column field="Role.Name" header="ROLE" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                   <p-column field="CompanyCode.Name" header="Company Code" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
-                  <p-column field="ProcessType.label" header="Process Type" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
+                  <p-column field="ProcessType.Name" header="Process Type" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                   <p-column>
                     <ng-template let-authorization="rowData" pTemplate="body">
                       <button pButton type="button" (click)="deleteAuthorization(authorization)" class="ui-button-danger" icon="fa-close"></button>
@@ -100,7 +100,7 @@
                   </p-footer>
                 </p-dataTable>
 
-                <p-dialog header="New Authorization" [(visible)]="displayDialog" showEffect="fade" [modal]="true">
+                <p-dialog header="New Authorization" appendTo="body" [(visible)]="displayDialog" showEffect="fade" [modal]="true">
                   <form #formAddUserAuthorization="ngForm">
                     <fieldset>
                       <div class="card-body row" *ngIf="authorization">
@@ -153,6 +153,8 @@
                     </div>
                   </p-footer>
                 </p-dialog>
+
+                
               </div>
 
             </div>

@@ -8,7 +8,7 @@ export class Authorization {
     Role: Role;
     BusinessUnit: BusinessUnit;
     CompanyCode: Master;
-    ProcessType: SelectItem;
+    ProcessType: Master;
     ProcessTypeId: number=-1;
 
     constructor()

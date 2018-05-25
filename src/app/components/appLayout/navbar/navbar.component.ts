@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../../services/authentication.service';
-import { BusinessUnit } from '../../models/business-unit';
-import { User } from '../../models/user.model';
+import { AuthenticationService } from '../../../services/authentication.service';
+import { BusinessUnit } from '../../../models/business-unit';
+import { User } from '../../../models/user.model';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmationService } from 'primeng/primeng';
 import swal from 'sweetalert2';

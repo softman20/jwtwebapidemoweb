@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../../models/user.model';
+import { User } from '../../../../models/user.model';
 import { HttpClient } from '@angular/common/http';
-import { UserService } from '../../../services/user.service';
+import { UserService } from '../../../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import swal from 'sweetalert2';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { NgProgress } from 'ngx-progressbar';
 import { ConfirmationService } from 'primeng/primeng';
 import { error } from 'util';
-import { BaseComponent } from '../../base/base.component';
+import { BaseComponent } from '../../../base/base.component';
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
