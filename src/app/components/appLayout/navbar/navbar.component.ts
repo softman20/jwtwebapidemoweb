@@ -7,6 +7,7 @@ import { UserService } from '../../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmationService } from 'primeng/primeng';
 import swal from 'sweetalert2';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -16,6 +17,7 @@ import swal from 'sweetalert2';
 export class NavbarComponent implements OnInit {
   //businessUnits:Array<BusinessUnit>;
   user: User;
+  allUsers:User[];
   selectedBusinessUnit: BusinessUnit;
   oldBusinessUnit: BusinessUnit;
 
@@ -26,6 +28,7 @@ export class NavbarComponent implements OnInit {
     //get BUs
     this.user = <User>this.activatedRoute.snapshot.data['user'];
     this.selectedBusinessUnit = this._userService.getBusinessUnit();
+    this.allUsers = this._userService.getAllUsers();
   }
 
   onBusinessUnitClicked() {
@@ -77,5 +80,10 @@ export class NavbarComponent implements OnInit {
       }
     })
   
+  }
+
+  switchUser(){
+    this.authenticationService.logout();
+    window.location.href = `${environment.API_ENDPOINT}/login-callback?switchsgid=C1607033`;
   }
 }

@@ -4,6 +4,7 @@ import { AuthenticationService } from './authentication.service';
 import { BusinessUnit } from '../models/business-unit';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
+import { UserBusinessUnitRole } from '../models/user-business-unit-role';
 
 @Injectable()
 export class BusinessUnitService {

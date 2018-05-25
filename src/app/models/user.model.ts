@@ -1,5 +1,6 @@
 import { BusinessUnit } from "./business-unit";
 import { Authorization } from "./authorization";
+import { UserBusinessUnitRole } from "./user-business-unit-role";
 
 export class User {
     //Id?:number=0;

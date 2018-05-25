@@ -51,7 +51,7 @@
           </ul>
         </li>
 
-        <li class="nav-item has-treeview menu-open">
+        <li *ngIf="_userService.roleMatch(['Administrator'])" class="nav-item has-treeview menu-open">
           <a  class="nav-link"   [ngClass]="{'active':validationRules.isActive}">
             <i class="nav-icon fa fa-edit"></i>
             <p>

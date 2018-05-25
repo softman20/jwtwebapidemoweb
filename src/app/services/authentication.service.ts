@@ -9,7 +9,7 @@ import 'rxjs/add/operator/catch';
 export class AuthenticationService {
 
   private TOKEN_KEY: string = '_token';
-
+  private USER_BUSINESSUNIT_KEY: string = '_user_businessunit';
   constructor(private http: HttpClient) { }
 
   /**
@@ -95,6 +95,10 @@ export class AuthenticationService {
     if (currentToken) {
         localStorage.removeItem(this.TOKEN_KEY);
     }
+    var currentBU = localStorage.getItem(this.USER_BUSINESSUNIT_KEY);
+    if (currentBU) {
+        localStorage.removeItem(this.USER_BUSINESSUNIT_KEY);
+    }    
   }
 
   private handleError(error: Response): Observable<any> {

@@ -16,16 +16,17 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class UserService extends BaseService {
-  
+
   private _currentUser: { token: string, object: User };
   private _currentUserBusinessUnit: BusinessUnit;
+  private _allUsers: User[];
   private USER_BUSINESSUNIT_KEY: string = '_user_businessunit';
 
   public onBusinessUnitChanged$: Subject<BusinessUnit>;
-  
+
   constructor(private businessUnitService: BusinessUnitService, private _http: HttpClient, private authenticationService: AuthenticationService) {
     super();
-    this.onBusinessUnitChanged$=new Subject();
+    this.onBusinessUnitChanged$ = new Subject();
   }
   getBusinessUnit(): BusinessUnit {
     if (this._currentUserBusinessUnit) {
@@ -46,6 +47,16 @@ export class UserService extends BaseService {
       this.setBusinessUnit(currentBu.Id);
       return currentBu;
     }
+  }
+
+  getAllUsers(): User[] {
+    if (this._allUsers)
+      return this._allUsers;
+
+    this.getUsers().subscribe(data => {
+      this._allUsers = data;
+      return this._allUsers;
+    });
   }
 
   public setBusinessUnit(id: number) {
@@ -88,7 +99,7 @@ export class UserService extends BaseService {
         user.FirstName = obj['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'];
         user.SgId = obj['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
 
-        if (user.LastName.indexOf(","))
+        if (user.LastName.indexOf(",") > 0)
           user.LastName = user.LastName.substring(0, user.LastName.indexOf(","));
         //user.userName = obj['sgid'];
         let BusinessUnits: string[] = _.compact(_.split(obj['businessUnits'], ','));
@@ -145,7 +156,7 @@ export class UserService extends BaseService {
   }
   roleMatch(allowedRoles): boolean {
     var isMatch = false;
-    let userRoles: string[] = this.getUserRoles();
+    let userRoles: string[] = this.getBusinessUnit().Roles;
     allowedRoles.forEach(element => {
       if (userRoles.indexOf(element) > -1) {
         isMatch = true;

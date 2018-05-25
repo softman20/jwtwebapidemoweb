@@ -16,7 +16,7 @@
       </div>
     <p-dropdown [options]="user.BusinessUnits" (onChange)="onBusinessUnitChanged($event.value)" (onClick)="onBusinessUnitClicked()" [(ngModel)]="selectedBusinessUnit"
     dropdownIcon="fa fa-globe" optionLabel="Name"></p-dropdown>
-     
+   
 </div>
     <!-- <select class="form-control col-md-3" (change)="onBusinessUnitChanged($event.target)">
       <option *ngFor="let bu of user.BusinessUnits" [value]="bu.Id">{{bu.Name}}</option>
@@ -114,6 +114,9 @@
             class="fa fa-th-large"></i></a>
       </li>
     </ul>
+    <button (click)="switchUser()" class="btn btn-primary"><i class="fa fa-user-o"></i> Switch User</button>
+    &nbsp;
+    
     <button (click)="logout()" class="btn btn-danger">logout</button>
   </nav>
   <!-- /.navbar -->
