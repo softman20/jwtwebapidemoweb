@@ -33,6 +33,7 @@ import { BusinessUnitService } from './services/business-unit.service';
 import { UserResolve } from './resolvers/user.resolve';
 import { ValidationRulesComponent } from './components/admin/validation-rules/validation-rules.component';
 import { CompanyService } from './services/company.service';
+import { UserToSelectItemPipe } from './pipes/user-to-select-item.pipe';
  
 
 // export function authorizationServiceFactory(injector: Injector) {
@@ -54,7 +55,8 @@ import { CompanyService } from './services/company.service';
     HomeComponent,
     ForbiddenComponent,
     ArrayToFieldPipe,
-    ValidationRulesComponent
+    ValidationRulesComponent,
+    UserToSelectItemPipe
      
   ],
   imports: [

@@ -5,7 +5,7 @@ import { User } from '../../../models/user.model';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService, SelectItem } from 'primeng/primeng';
 import swal from 'sweetalert2';
 import { environment } from '../../../../environments/environment';
 
@@ -17,10 +17,10 @@ import { environment } from '../../../../environments/environment';
 export class NavbarComponent implements OnInit {
   //businessUnits:Array<BusinessUnit>;
   user: User;
-  allUsers:User[];
+  allUsers: User[];
   selectedBusinessUnit: BusinessUnit;
   oldBusinessUnit: BusinessUnit;
-
+  userToSwitch: any;
   constructor(private confirmationService: ConfirmationService, private activatedRoute: ActivatedRoute, private toastr: ToastrService,
     private _userService: UserService, private authenticationService: AuthenticationService) { }
 
@@ -28,9 +28,14 @@ export class NavbarComponent implements OnInit {
     //get BUs
     this.user = <User>this.activatedRoute.snapshot.data['user'];
     this.selectedBusinessUnit = this._userService.getBusinessUnit();
-    this.allUsers = this._userService.getAllUsers();
   }
 
+  loadAllUsers() {
+    this.userToSwitch = null;
+    this._userService.getAllUsers().subscribe(data => {
+      this.allUsers = data;
+    });
+  }
   onBusinessUnitClicked() {
     if (!this.oldBusinessUnit)
       this.oldBusinessUnit = this.selectedBusinessUnit;
@@ -54,36 +59,33 @@ export class NavbarComponent implements OnInit {
       this.oldBusinessUnit = null;
     });
 
-    // this.confirmationService.confirm({
-    //   message: `Are you sure to change the Business Unit to ${BusinessUnit.Name} ?`,
-    //   header: 'Business Unit Confirmation',
-    //   icon: 'fa fa-globe',
-    //   accept: () => {
-    //     this._userService.setBusinessUnit(BusinessUnit.Id);
-    //     this.toastr.info(this._userService.getBusinessUnit().Name);       
-    //   },
-    //   reject: () => {
-    //    // this.toastr.info('You have rejected');
-    //   }
-    // });
 
   }
 
   logout() {
     // alert(0);
     this.confirmationService.confirm({
-      header:'Close session',
-      message:'Are you sur to want to logout ?',
-      accept:()=>{
+      header: 'Close session',
+      message: 'Are you sur to want to logout ?',
+      accept: () => {
         this.toastr.info("Closing your session ...");
         this.authenticationService.logout();
       }
     })
-  
+
   }
 
-  switchUser(){
-    this.authenticationService.logout();
-    window.location.href = `${environment.API_ENDPOINT}/login-callback?switchsgid=C1607033`;
+  switchUser() {
+    this.confirmationService.confirm({
+      header: 'Switch User',
+      message: 'Are you sur to want to switch current user ?',
+      accept: () => {
+        this.toastr.info("Switching to user : " + this.userToSwitch + ' ...');
+        this.authenticationService.logout();
+        window.location.href = `${environment.API_ENDPOINT}/login-callback?switchsgid=${this.userToSwitch}`;
+      }
+    })
+
+
   }
 }

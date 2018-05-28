@@ -19,7 +19,7 @@ export class UserService extends BaseService {
 
   private _currentUser: { token: string, object: User };
   private _currentUserBusinessUnit: BusinessUnit;
-  private _allUsers: User[];
+  private _allUsers: Observable<User[]>;
   private USER_BUSINESSUNIT_KEY: string = '_user_businessunit';
 
   public onBusinessUnitChanged$: Subject<BusinessUnit>;
@@ -49,14 +49,11 @@ export class UserService extends BaseService {
     }
   }
 
-  getAllUsers(): User[] {
+  getAllUsers(): Observable<User[]> {
     if (this._allUsers)
       return this._allUsers;
 
-    this.getUsers().subscribe(data => {
-      this._allUsers = data;
-      return this._allUsers;
-    });
+      return this.getUsers();
   }
 
   public setBusinessUnit(id: number) {
