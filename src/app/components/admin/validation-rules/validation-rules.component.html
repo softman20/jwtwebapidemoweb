@@ -16,8 +16,9 @@
                     <b class="text-danger" *ngIf="processType.touched && processType.invalid">*</b>
                   </label>
                   <div>
-                    <p-selectButton name="processType" (onChange)="processTypeChanged()" [options]="processTypes" #processType="ngModel" [(ngModel)]="selectedProcessType"
-                      required></p-selectButton>                   
+                    <p-selectButton name="processType" (onChange)="processTypeChanged()" [options]="processTypes" #processType="ngModel" [(ngModel)]="validationRule.ProcessTypeId"
+                      required></p-selectButton>
+                      {{validationRule.ProcessTypeId}}
                     <span class="text-danger" *ngIf="processType.touched && processType.invalid">Process Type is required</span>
                   </div>
                 </div>
@@ -26,9 +27,9 @@
                     <b class="text-danger" *ngIf="companyCode.touched && companyCode.invalid">*</b>
                   </label>
                   <div>
-                    <p-dropdown [options]="companies" #companyCode="ngModel" name="companyCode" [(ngModel)]="selectedCompanyCode" filter="true" placeholder="Select a Company"
-                      optionLabel="Name" [showClear]="true" required></p-dropdown>
-
+                    <p-dropdown appendTo="body" [options]="companies" #companyCode="ngModel" name="companyCode" [(ngModel)]="validationRule.CompanyCode"
+                      filter="true" placeholder="Select Company" optionLabel="Name" [showClear]="true" required></p-dropdown>
+{{validationRule?.CompanyCode?.Id}}
                   </div>
                 </div>
               </div>
@@ -36,10 +37,8 @@
                 <div class="form-group col-sm-6">
                   <label for="" class=" control-label">Account Group</label>
                   <div class=" ">
-                    <select name="" class="form-control" required>
-                      <option value="" disabled>Supplier</option>
-
-                    </select>
+                    <p-dropdown appendTo="body" [options]="accountGroups" #companyCode="ngModel" name="accountGroups" [(ngModel)]="selectedAccountGroup"
+                      filter="true" placeholder="Select Account Group" optionLabel="Name" [showClear]="true" required></p-dropdown>
                   </div>
                 </div>
                 <div class="form-group col-sm-6">
@@ -56,8 +55,56 @@
             </div>
             <div class="card-footer">
               <button [disabled]="!formValidationRules.valid" type="submit" class="btn btn-info float-right">View</button>
+              <button (click)="showNewValidationRuleDialog()" type="submit" class="btn btn-success">Add New</button>
             </div>
           </form>
+          <p-dialog header="Validation Rule" appendTo="body" [(visible)]="displayDialog" showEffect="fade" [modal]="true">
+            <form #formAddValidationRule="ngForm">
+              <fieldset>
+                <div class="card-body row" *ngIf="validationRule">
+                  <div class="form-group col-md-3">
+                    <label for="authRole">Provider</label>
+                    <div class="">
+                      <p-dropdown appendTo="body" name="provider"  showClear="true" [style]="{'width':'200px'}" [(ngModel)]="selectedValidationRuleProvider"
+                        [options]="validationRuleProviders | userToSelectItem" placeholder="Select a User"   [filter]="true" required>
+                        <ng-template let-item pTemplate="selectedItem">                           
+                         {{item.FirstName}}
+                        </ng-template> 
+                       
+                      </p-dropdown>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                      <label for="authRole">Approver 1</label>
+                      <div class="">
+                        <p-dropdown appendTo="body" name="approver1"  showClear="true" [style]="{'width':'200px'}" [(ngModel)]="selectedValidationRuleApprover1"
+                          [options]="validationRuleApprover1 | userToSelectItem" placeholder="Select a User"   [filter]="true" required></p-dropdown>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="authRole">Approver 2</label>
+                        <div class="">
+                          <p-dropdown appendTo="body" name="provider"  showClear="true" [style]="{'width':'200px'}" [(ngModel)]="selectedValidationRuleProvider"
+                            [options]="validationRuleProviders | userToSelectItem" placeholder="Select a User"   [filter]="true" required></p-dropdown>
+                        </div>
+                      </div>
+                      <div class="form-group col-md-3">
+                          <label for="authRole">Accountant</label>
+                          <div class="">
+                            <p-dropdown appendTo="body" name="provider"  showClear="true" [style]="{'width':'200px'}" [(ngModel)]="selectedValidationRuleProvider"
+                              [options]="validationRuleProviders | userToSelectItem" placeholder="Select a User"   [filter]="true" required></p-dropdown>
+                          </div>
+                        </div>
+                </div>
+              </fieldset>
+            </form>
+            <p-footer>
+                <div class=" ">
+                  <button type="button" pButton icon="fa-close" (click)="this.displayDialog = false;" label="Cancel"></button>
+                  <button type="button" [disabled]="!formAddValidationRule.valid" pButton icon="fa-check" (click)="addValidationRule()" label="Save"></button>
+                </div>
+              </p-footer>
+          </p-dialog>
         </div>
       </div>
     </div>

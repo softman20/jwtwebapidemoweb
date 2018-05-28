@@ -6,6 +6,7 @@ import { SelectItem } from "primeng/primeng";
 export class Authorization {
     UserId: number;
     Role: Role;
+    RoleId: number;
     BusinessUnit: BusinessUnit;
     CompanyCode: Master;
     ProcessType: Master;

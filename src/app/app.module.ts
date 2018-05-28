@@ -34,6 +34,7 @@ import { UserResolve } from './resolvers/user.resolve';
 import { ValidationRulesComponent } from './components/admin/validation-rules/validation-rules.component';
 import { CompanyService } from './services/company.service';
 import { UserToSelectItemPipe } from './pipes/user-to-select-item.pipe';
+import { ValidationRuleService } from './services/validation-rule.service';
  
 
 // export function authorizationServiceFactory(injector: Injector) {
@@ -83,7 +84,7 @@ import { UserToSelectItemPipe } from './pipes/user-to-select-item.pipe';
     
   ],
   providers: [CarService, UserService,ConfirmationService,AuthGuard,HomeGuard,AuthenticationService,
-    BusinessUnitService,CompanyService,
+    BusinessUnitService,CompanyService,ValidationRuleService,
     UserResolve,
     { provide: HTTP_INTERCEPTORS, useClass: NgProgressInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthService, multi: true }

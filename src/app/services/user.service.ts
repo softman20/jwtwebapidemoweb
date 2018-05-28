@@ -28,6 +28,8 @@ export class UserService extends BaseService {
     super();
     this.onBusinessUnitChanged$ = new Subject();
   }
+
+ 
   getBusinessUnit(): BusinessUnit {
     if (this._currentUserBusinessUnit) {
       return this._currentUserBusinessUnit;

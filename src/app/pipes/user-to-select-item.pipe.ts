@@ -10,7 +10,7 @@ export class UserToSelectItemPipe implements PipeTransform {
   transform(users: User[]): SelectItem[] {
     if (!users)
       return undefined;
-    return users.map(u => ( { label:  u.FirstName + ' ' + u.LastName+ ' -- ('+u.SgId+')', value: u.SgId }));
+    return users.map(u => ( {FirstName:u.FirstName, label:  u.FirstName + ' ' + u.LastName+ ' -- ('+u.SgId+')', value: u.SgId }));
   }
 
 }
