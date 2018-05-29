@@ -72,7 +72,7 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <p-dataTable #authorizations   appendTo="ngHere" [value]="selectedUser?.Authorizations" [rows]="10" [paginator]="true">
+                    <p-dataTable #authorizations   [value]="selectedUser?.Authorizations" [rows]="10" [paginator]="true">
                       <p-column header="BU" field="BusinessUnit.Name" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                       <p-column field="Role.Name" header="ROLE" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                       <p-column field="CompanyCode.Name" header="Company Code" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>

@@ -23,34 +23,40 @@ export class ValidationRulesComponent implements OnInit {
   selectedProcessType: string = '';
   selectedRequestType: string = '';
   selectedCompanyCode: Master = null;
-  selectedAccountGroup:Master=null;
+  selectedAccountGroup: Master = null;
   companies: Master[];
-  accountGroups:Master[];
-  displayDialog:boolean=false;
-  validationRule:ValidationRule=new ValidationRule();
-  validationRuleUserRole:ValidationRuleUserRole=new ValidationRuleUserRole();
-  validationRuleProviders:User[];
-  validationRuleApprover1:User[];
-  selectedValidationRuleProvider:any;
-  selectedValidationRuleApprover1:any;
+  accountGroups: Master[];
+  displayDialog: boolean = false;
+  validationRule: ValidationRule = new ValidationRule();
+
+  validationRuleProviders: User[];
+  validationRuleApprover1: User[];
+  validationRuleApprover2: User[];
+  validationRuleAccountants: User[];
+
+  selectedValidationRuleProvider: User;
+  selectedValidationRuleApprover1: User;
+  selectedValidationRuleApprover2: User;
+  selectedValidationRuleAccountant: User;
+
   subscriptions: Array<Subscription> = new Array<Subscription>();
   processTypes: Array<SelectItem> = StaticDataModels.processTypes;
-  
- // processTypes: SelectItem[] = [{ label: 'Supplier', value: '1', icon: 'fa fa-users' }, { label: 'Customer', value: '2', icon: 'fa fa-user' }];
-  requestTypes: SelectItem[] = [{ label: 'Creation', value: '1', icon: 'fa fa-plus' }, { label: 'Modification', value: '2', icon: 'fa fa-pencil' }];
+  requestTypes: Array<SelectItem> = StaticDataModels.requestTypes;
 
-  constructor(private toastr: ToastrService, private _companyService: CompanyService, private _userService: UserService,private _validationUserService:ValidationRuleService) { }
+
+  constructor(private toastr: ToastrService, private _companyService: CompanyService, private _userService: UserService, private _validationUserService: ValidationRuleService) { }
 
   ngOnInit() {
-   // this.subscriptions.push(this._userService.onBusinessUnitChanged$.subscribe(bu => { this.loadCompanies(); }));
-   
+    // this.subscriptions.push(this._userService.onBusinessUnitChanged$.subscribe(bu => { this.loadCompanies(); }));   
   }
 
-  getValidationRuleProviders() {
-    this._validationUserService.getValidationRuleProviders(this.validationRule).subscribe(
+  getValidationRulePotentielUsers() {
+    this._validationUserService.getValidationRulePotentielUsers(this.validationRule).subscribe(
       (data: User[]) => {
-        this.validationRuleProviders = data.filter(e=>e.Authorizations.find(a=>a.RoleId==Roles.Provider));
-        this.validationRuleApprover1 = data.filter(e=>e.Authorizations.find(a=>a.RoleId==Roles.Approver1));
+        this.validationRuleProviders = data.filter(e => e.Authorizations.find(a => a.RoleId == Roles.Provider));
+        this.validationRuleApprover1 = data.filter(e => e.Authorizations.find(a => a.RoleId == Roles.Approver1));
+        this.validationRuleApprover2 = data.filter(e => e.Authorizations.find(a => a.RoleId == Roles.Approver2));
+        this.validationRuleAccountants = data.filter(e => e.Authorizations.find(a => a.RoleId == Roles.Accountant));
       }
     )
   }
@@ -58,7 +64,7 @@ export class ValidationRulesComponent implements OnInit {
 
     this.loadCompanies();
     this.loadAccountGroups();
-   // this.validationRule = new ValidationRule();
+    // this.validationRule = new ValidationRule();
   }
 
   loadCompanies() {
@@ -81,11 +87,30 @@ export class ValidationRulesComponent implements OnInit {
     }
   }
 
-  showNewValidationRuleDialog(){
-    this.validationRule.ProcessType = Helpers.convertLabelToMaster(this.processTypes).find(e => e.Id == this.validationRule.ProcessTypeId);
-    this.validationRule.BusinessUnit=this._userService.getBusinessUnit();
+  showNewValidationRuleDialog() {
+    this.getValidationRulePotentielUsers();
+    this.displayDialog = true;
+  }
 
-    this.getValidationRuleProviders();
-    this.displayDialog=true;
+  addValidationRule() {
+    this.validationRule.ValidationRuleUserRoles = new Array<ValidationRuleUserRole>();
+    this.validationRule.ValidationRuleUserRoles.push({ RoleId: Roles.Provider, User: this.selectedValidationRuleProvider });
+    this.validationRule.ValidationRuleUserRoles.push({ RoleId: Roles.Approver1, User: this.selectedValidationRuleApprover1 });
+    this.validationRule.ValidationRuleUserRoles.push({ RoleId: Roles.Approver2, User: this.selectedValidationRuleApprover2 });
+    this.validationRule.ValidationRuleUserRoles.push({ RoleId: Roles.Accountant, User: this.selectedValidationRuleAccountant });
+
+    this._validationUserService.addValidationRule(this.validationRule).subscribe(data => {
+      this.displayDialog = false;
+    });
+  }
+
+  getValidationRuleUserRoles() {
+    this.validationRule.ProcessType = Helpers.convertLabelToMaster(this.processTypes).find(e => e.Id == this.validationRule.ProcessTypeId);
+    this.validationRule.RequestType = Helpers.convertLabelToMaster(this.requestTypes).find(e => e.Id == this.validationRule.RequestTypeId);
+    this.validationRule.BusinessUnit = this._userService.getBusinessUnit();
+    
+    this._validationUserService.getValidationRuleUserRoles(this.validationRule).subscribe(data => {
+      this.validationRule.ValidationRuleUserRoles = data;
+    });
   }
 }

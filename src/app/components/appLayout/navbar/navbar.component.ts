@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
   allUsers: User[];
   selectedBusinessUnit: BusinessUnit;
   oldBusinessUnit: BusinessUnit;
-  userToSwitch: any;
+  userToSwitch: User;
   constructor(private confirmationService: ConfirmationService, private activatedRoute: ActivatedRoute, private toastr: ToastrService,
     private _userService: UserService, private authenticationService: AuthenticationService) { }
 
@@ -78,11 +78,11 @@ export class NavbarComponent implements OnInit {
   switchUser() {
     this.confirmationService.confirm({
       header: 'Switch User',
-      message: 'Are you sur to want to switch current user ?',
+      message: `Are you sur to want to switch current user to ${this.userToSwitch.FirstName} ${this.userToSwitch.LastName} ?`,
       accept: () => {
-        this.toastr.info("Switching to user : " + this.userToSwitch + ' ...');
+        this.toastr.info("Switching to user : " + this.userToSwitch.FirstName+' '+this.userToSwitch.LastName + ' ...');
         this.authenticationService.logout();
-        window.location.href = `${environment.API_ENDPOINT}/login-callback?switchsgid=${this.userToSwitch}`;
+        window.location.href = `${environment.API_ENDPOINT}/login-callback?switchsgid=${this.userToSwitch.SgId}`;
       }
     })
 
