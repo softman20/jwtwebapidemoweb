@@ -1,10 +1,11 @@
 import { Master } from "../models/master";
-import { SelectItem } from "primeng/primeng";
+import { SelectItem, TreeNode } from "primeng/primeng";
+import { ValidationRuleUserRole } from "../models/validation-rule-user-role";
 
 export class Helpers {
 
     
- static convertLabelToMaster(source:Array<SelectItem>):Array<Master>{
+ static ConvertLabelToMaster(source:Array<SelectItem>):Array<Master>{
     let dest:Array<Master>=new Array<Master>();
    
     source.forEach(element => {
@@ -14,5 +15,26 @@ export class Helpers {
       dest.push(temp);
     });
     return dest;
+  }
+
+  static ConvertValidationRuleToOrgChartArray(source:Array<ValidationRuleUserRole>):TreeNode[]
+  {
+    let data: TreeNode[]= [{
+      label: 'Validation Process',
+      expanded: true,
+      data: {name:'', '': ''},
+      children:[]
+  }];
+    source.forEach(element => {
+      data[0].children.push({
+                label: element.Role.Name,
+                type: 'person',
+                styleClass: 'ui-person',             
+                data: {name:element.User.FirstName+' '+element.User.LastName},
+               
+            });
+    });
+
+    return data;
   }
 }

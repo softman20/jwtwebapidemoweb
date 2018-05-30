@@ -8,6 +8,7 @@ export class ValidationRuleUserRole {
     Role?:Role;
     UserId?:number;
     User?:User;
+    ValidationRuleId?:number;
 
     constructor (){}
 }

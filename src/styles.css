@@ -7,3 +7,11 @@ input.ng-invalid.ng-dirty{
 .modal {
     z-index: 10000 !important;
     }
+
+    .ui-node-toggler{
+        display: none;
+        }
+
+        .ui-person {
+            padding: 0 !important;
+        }

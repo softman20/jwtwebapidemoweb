@@ -217,7 +217,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
 
       //get ProcessType
    
-      this.authorization.ProcessType = Helpers.convertLabelToMaster(this.processTypes).find(e => e.Id == this.authorization.ProcessTypeId);
+      this.authorization.ProcessType = Helpers.ConvertLabelToMaster(this.processTypes).find(e => e.Id == this.authorization.ProcessTypeId);
       //delete sub authorizations if exist
       this.deleteSubAuthorizationIfExist();
       let authorizations = [...this.user.Authorizations];

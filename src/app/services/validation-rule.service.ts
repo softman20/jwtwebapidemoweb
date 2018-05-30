@@ -15,12 +15,16 @@ export class ValidationRuleService {
     return this._http.post<User[]>(environment.API_ENDPOINT + '/api/ValidationRule/GetUsers', validationRule);
   }
 
-  addValidationRule(validationRule: ValidationRule) {
-    return this._http.post(environment.API_ENDPOINT + '/api/ValidationRule/', validationRule);
+  addValidationRule(validationRule: ValidationRule): Observable<number> {
+    return this._http.post<number>(environment.API_ENDPOINT + '/api/ValidationRule/', validationRule);
   }
 
   getValidationRuleUserRoles(validationRule: ValidationRule): Observable<ValidationRuleUserRole[]> {
     return this._http.post<ValidationRuleUserRole[]>(environment.API_ENDPOINT + '/api/ValidationRule/GetValidationRuleUserRoles', validationRule);
+  }
+
+  deleteValidationRule(id:number){
+    return this._http.delete(environment.API_ENDPOINT+'/api/ValidationRule/'+id);
   }
 
 }

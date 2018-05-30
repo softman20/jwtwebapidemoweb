@@ -84,8 +84,6 @@ export class NavbarComponent implements OnInit {
         this.authenticationService.logout();
         window.location.href = `${environment.API_ENDPOINT}/login-callback?switchsgid=${this.userToSwitch.SgId}`;
       }
-    })
-
-
+    });
   }
 }
