@@ -9,7 +9,7 @@ import { TestComponent } from './components/test/test.component';
 import { NavbarComponent } from './components/appLayout/navbar/navbar.component';
 import { SidebarComponent } from './components/appLayout/sidebar/sidebar.component';
 import { TablesComponent } from './components/tables/tables.component';
-import { DataTableModule, SliderModule,CheckboxModule, DropdownModule, MultiSelectModule,ProgressSpinnerModule, ConfirmationService, ConfirmDialogModule, AutoCompleteModule, SelectButtonModule, InputSwitchModule, DialogModule, OrganizationChartModule } from 'primeng/primeng';
+import { DataTableModule, SliderModule,CheckboxModule, DropdownModule, MultiSelectModule,ProgressSpinnerModule, ConfirmationService, ConfirmDialogModule, AutoCompleteModule, SelectButtonModule, InputSwitchModule, DialogModule, OrganizationChartModule, ToggleButtonModule } from 'primeng/primeng';
 import { CarService } from './services/car.service';
 import { RouterModule, Routes } from '@angular/router';
 import { SignUpComponent } from './components/superAdmin/users/sign-up/sign-up.component';
@@ -36,6 +36,7 @@ import { CompanyService } from './services/company.service';
 import { UserToSelectItemPipe } from './pipes/user-to-select-item.pipe';
 import { ValidationRuleService } from './services/validation-rule.service';
 import { ValidationRuleToOrgChartArrayPipe } from './pipes/validation-rule-to-org-chart-array.pipe';
+import { GetUserAvatarSrcPipe } from './pipes/get-user-avatar-src.pipe';
  
 
 // export function authorizationServiceFactory(injector: Injector) {
@@ -59,7 +60,8 @@ import { ValidationRuleToOrgChartArrayPipe } from './pipes/validation-rule-to-or
     ArrayToFieldPipe,
     ValidationRulesComponent,
     UserToSelectItemPipe,
-    ValidationRuleToOrgChartArrayPipe
+    ValidationRuleToOrgChartArrayPipe,
+    GetUserAvatarSrcPipe
      
   ],
   imports: [
@@ -83,8 +85,8 @@ import { ValidationRuleToOrgChartArrayPipe } from './pipes/validation-rule-to-or
     SelectButtonModule,
     InputSwitchModule,
     DialogModule,
-    OrganizationChartModule
-    
+    OrganizationChartModule,
+    ToggleButtonModule
   ],
   providers: [CarService, UserService,ConfirmationService,AuthGuard,HomeGuard,AuthenticationService,
     BusinessUnitService,CompanyService,ValidationRuleService,

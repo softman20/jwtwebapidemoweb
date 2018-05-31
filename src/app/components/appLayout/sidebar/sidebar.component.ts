@@ -16,6 +16,6 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
    this.user = <User>this.activatedRoute.snapshot.data['user'];
-  }
+   }
 
 }

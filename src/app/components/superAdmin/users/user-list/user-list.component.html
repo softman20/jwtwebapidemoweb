@@ -3,14 +3,14 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>user list</h1>
+        <h1>User Management</h1>
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item">
             <a href="#">Home</a>
           </li>
-          <li class="breadcrumb-item active">Simple Tables</li>
+          <li class="breadcrumb-item active">User List</li>
         </ol>
       </div>
     </div>
@@ -24,16 +24,22 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Users</h3>
+            <h3 class="card-title">User List</h3>
+            <button class="btn btn-primary float-sm-right" routerLink="/sign-up">Add new user</button>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
 
             <p-dataTable #dtUsers [value]="users" loadingIcon="fa fa-spinner" [loading]="loading">
-              <p-column field="FirstName" header="FirstName"></p-column>
-              <p-column field="LastName" header="LastName"></p-column>
-              <p-column field="Email" header="Email"></p-column>
-              <p-column field="SgId" header="SgId"></p-column>
+                <p-column styleClass="text-center">
+              <ng-template  let-user="rowData" pTemplate="body">
+                  <img [src]="user | getUserAvatarSrc" class="img-circle elevation-2" width="64">
+              </ng-template>
+            </p-column>
+              <p-column field="FirstName" header="FirstName" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
+              <p-column field="LastName" header="LastName" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
+              <p-column field="Email" header="Email" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
+              <p-column field="SgId" header="SgId" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
               <p-column header="CreatedDate">
                 <ng-template let-user="rowData" pTemplate="body">{{user.CreatedDate | date}}</ng-template>
               </p-column>

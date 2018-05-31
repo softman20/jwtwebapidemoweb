@@ -7,4 +7,5 @@ export class LdapUser {
     mail: string;
     preferredGivenName: string;
     preferredName: string;
+    personalTitle:string;
 }

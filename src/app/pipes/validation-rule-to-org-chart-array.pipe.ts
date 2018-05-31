@@ -22,7 +22,8 @@ export class ValidationRuleToOrgChartArrayPipe implements PipeTransform {
                 label: element.Role.Name,
                 type: 'person',
                 styleClass: 'ui-person',             
-                data: {name:element.User.FirstName+' '+element.User.LastName},
+                data: {name:element.User.FirstName+' '+element.User.LastName,'avatar':'icon-'+ element.User.Gender+'.png','sgid':element.User.SgId,
+              'user':element.User},
                
             });
     });

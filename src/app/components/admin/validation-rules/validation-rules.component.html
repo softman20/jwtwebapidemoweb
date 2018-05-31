@@ -125,7 +125,7 @@
             <ng-template let-node pTemplate="person">
               <div class="node-header ui-corner-top">{{node.label}}</div>
               <div class="node-content">
-                <i class="fa fa-user" aria-hidden="true"></i>
+                  <img [src]="node.data.user |getUserAvatarSrc" width="48">
                 <div>{{node.data.name}}</div>
               </div>
             </ng-template>

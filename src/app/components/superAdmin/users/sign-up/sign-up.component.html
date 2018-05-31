@@ -31,7 +31,7 @@
           </div>
           <!-- /.card-header -->
           <!-- form start -->
-          <form #userRegistrationForm="ngForm" (ngSubmit)="OnSubmit(userRegistrationForm)">
+          <form #userRegistrationForm="ngForm" (ngSubmit)="OnSubmit(userRegistrationForm,avatarImg)">
             <div class="card-body">
               <div class="form-group" [class.has-error]="SgId.touched && SgId.invalid">
                 <label for="exampleInputPassword1">SgId</label>
@@ -44,8 +44,12 @@
                   <input [disabled]="editMode" UpperCaseText minlength="8" maxlength="8" type="text" name="SgId" #SgId="ngModel" [(ngModel)]="user.SgId"
                     required class="form-control" placeholder="SgId">
                   <div class="input-group-append">
-                    <button type="button" [disabled]="editMode" (click)="sgIDChanged()" class="btn btn-primary">search</button>
+                    <button type="button" [disabled]="editMode" (click)="sgIDChanged(avatarImg)" class="btn btn-primary">search</button>
                   </div>
+                  <!-- [style.display]="validAvatar ? '' : 'none'" -->
+                  <img [style.display]="user.Gender?'':'none'" #avatarImg src="http://whiteyellowpages.eworkplace.saint-gobain.com/Photos/{{user.SgId}}.jpg" (load)="avatarLoaded(avatarImg)" (error)="avatarLoaded(avatarImg,true)" style="max-width: 112px;max-height: 135px">
+                  <!-- <img #avatarImgTest src="http://whiteyellowpages.eworkplace.saint-gobain.com/Photos/{{user.SgId}}.jpg" (load)="AvatarTestLoaded(avatarImgTest)" (error)="AvatarTestLoaded(avatarImgTest,true)" style="display:none"> -->
+                
                 </div>
               </div>
               <div class="form-group">
@@ -54,7 +58,7 @@
                   placeholder="Enter email">
 
               </div>
-
+              
               <div class="form-group">
                 <label for="exampleInputPassword1">FirstName</label>
                 <input type="text" readonly="readonly" name="FirstName" #FirstName="ngModel" [(ngModel)]="user.FirstName" required class="form-control"
@@ -65,6 +69,7 @@
                 <input type="text" readonly="readonly" name="LastName" #LastName="ngModel" [(ngModel)]="user.LastName" required class="form-control"
                   placeholder="LastName">
               </div>
+              
 
               <!-- <div class="form-group">
                 <label>Role</label>
@@ -110,6 +115,7 @@
                             <p-dropdown appendTo="body" name="authRole" name="authRole" showClear="true" [style]="{'width':'150px'}" [(ngModel)]="authorization.Role"
                               [options]="roles" placeholder="Select a Role" inputId="Id" optionLabel="Name" [filter]="true"
                               required></p-dropdown>
+                              {{authorization?.Role?.Id}}
                           </div>
 
                         </div>
@@ -137,7 +143,7 @@
                           </label>
                           <div>
                             <p-selectButton name="processType" [options]="processTypes" #processType="ngModel" [(ngModel)]="authorization.ProcessTypeId"
-                              [disabled]="authorization.CompanyCode?.Id===-1" required></p-selectButton>
+                               required></p-selectButton>
                             {{authorization.ProcessTypeId}}
                             <span class="text-danger" *ngIf="processType.touched && processType.invalid">Process Type is required</span>
                           </div>
@@ -156,7 +162,11 @@
 
                 
               </div>
-
+              <div class="form-group">
+                  <label for="">Make this user as Super Admin</label>              
+                      <p-toggleButton name="IsSuperAdmin" #IsSuperAdmin [(ngModel)]="user.IsSuperAdmin" ></p-toggleButton>       
+                      <h5 *ngIf="user.IsSuperAdmin" class="text-danger">Attention ! Super Admin Can Manage All Users !</h5>         
+                </div>
             </div>
             <!-- /.card-body -->
 

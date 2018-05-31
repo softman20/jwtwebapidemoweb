@@ -14,4 +14,9 @@ export class User {
     BusinessUnits:BusinessUnit[]=new Array<BusinessUnit>();
     BusinessUnitsId:number[];
     Authorizations:Authorization[]=new Array<Authorization>();
+    Gender:string;
+    ValidAvatar:boolean=false;
+    IsSuperAdmin:boolean=false;
+ 
+
 }

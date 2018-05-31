@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { BusinessUnit } from '../../../models/business-unit';
 import { User } from '../../../models/user.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmationService, SelectItem } from 'primeng/primeng';
@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit {
   selectedBusinessUnit: BusinessUnit;
   oldBusinessUnit: BusinessUnit;
   userToSwitch: User;
-  constructor(private confirmationService: ConfirmationService, private activatedRoute: ActivatedRoute, private toastr: ToastrService,
+  constructor(private router: Router,private confirmationService: ConfirmationService, private activatedRoute: ActivatedRoute, private toastr: ToastrService,
     private _userService: UserService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
@@ -53,8 +53,10 @@ export class NavbarComponent implements OnInit {
       if (result.value) {
         this._userService.setBusinessUnit(BusinessUnit.Id);
         this.toastr.info(`${this._userService.getBusinessUnit().Name} is Active now !`);
+        this.router.navigate(['/']);
       } else {
         this.selectedBusinessUnit = this.oldBusinessUnit;
+
       }
       this.oldBusinessUnit = null;
     });

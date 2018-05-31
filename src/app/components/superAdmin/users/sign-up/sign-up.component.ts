@@ -20,8 +20,8 @@ import { StaticDataModels } from '../../../../dataModels/staticDataModels';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent extends BaseComponent implements OnInit {
-  user: User;
-  roles: Role[];
+  user: User = new User();
+  roles: Role[]=StaticDataModels.allRoles;
   businessUnits: BusinessUnit[];
   companies: Master[];
   userSgid: string;
@@ -29,7 +29,9 @@ export class SignUpComponent extends BaseComponent implements OnInit {
   displayDialog: boolean;
   authorization: Authorization = new Authorization();
   loading: boolean = false;
-  processTypes: Array<SelectItem> = StaticDataModels.processTypes;
+  processTypes: Array<SelectItem> = StaticDataModels.allProcessTypes;
+ // validAvatar: boolean = false;
+  // avatarSrc:string=`http://whiteyellowpages.eworkplace.saint-gobain.com/Photos/${this.user.SgId}.jpg`;
 
   constructor(private _companyService: CompanyService, private _userService: UserService, private router: Router,
     private _activatedRoute: ActivatedRoute, private toastr: ToastrService, private _confirmationService: ConfirmationService) { super(); }
@@ -43,12 +45,13 @@ export class SignUpComponent extends BaseComponent implements OnInit {
         this._userService.getUser(this.userSgid).subscribe(
           (userData) => {
             this.user = userData;
+            //  this.avatarSrc= this.user.ValidAvatar? `http://whiteyellowpages.eworkplace.saint-gobain.com/Photos/${this.user.SgId}.jpg`:`../../../../../assets/img/avatars/icon-${this.user.Gender}.png`
             this.editMode = true;
             this.loading = false;
           }
         );
       }
-      this.getRoles();
+     // this.getRoles();
       this.getBusinessUnits();
 
       //this.getComanies(true);
@@ -82,10 +85,11 @@ export class SignUpComponent extends BaseComponent implements OnInit {
       }
     )
   }
-  OnSubmit(form: NgForm) {
+  OnSubmit(form: NgForm, avatarImg: any = null) {
     if (this.user.Authorizations.length > 0) {
       //edit
       if (this.editMode) {
+        this.manageUserAvatar(avatarImg);
         this.updateUser();
       } else {
         this.addUser();
@@ -120,14 +124,15 @@ export class SignUpComponent extends BaseComponent implements OnInit {
     if (form != null)
       form.resetForm();
     this.user = new User();
-
-
+    //this.avatarSrc="";
   }
 
-  sgIDChanged() {
+  sgIDChanged(imgAvatar) {
     if (this.user.SgId) {
-      if (this.user.SgId.length != 8)
+      if (this.user.SgId.length != 8) {
+        this.resetForm();
         this.toastr.info("Please enter a valid SGID");
+      }
       else {
         //call directory service
         this._userService.getUserFromLDAP(this.user.SgId).subscribe(
@@ -148,6 +153,9 @@ export class SignUpComponent extends BaseComponent implements OnInit {
               this.user.LastName = userData.sn;
             }
             else this.user.LastName = userData.mail.substring(userData.mail.indexOf(".") + 1, userData.mail.indexOf("@"));
+            this.user.Gender = userData.personalTitle != null ? userData.personalTitle == 'Mr' ? "M" : "F" : "";
+
+            this.manageUserAvatar(imgAvatar);
 
           },
           error => {
@@ -157,6 +165,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
             this.user.SgId = enteredSGID;
           }
         );
+
 
       }
     }
@@ -216,7 +225,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
     else {
 
       //get ProcessType
-   
+
       this.authorization.ProcessType = Helpers.ConvertLabelToMaster(this.processTypes).find(e => e.Id == this.authorization.ProcessTypeId);
       //delete sub authorizations if exist
       this.deleteSubAuthorizationIfExist();
@@ -259,7 +268,25 @@ export class SignUpComponent extends BaseComponent implements OnInit {
     });
 
   }
+  manageUserAvatar(avatarImg) {
+    if (!this.user.ValidAvatar) {
+      avatarImg.src = `../../../../../assets/img/avatars/icon-${this.user.Gender}.png`;
+    }
+  }
 
+  avatarLoaded(avatarImg: any, isError: boolean = false) {
+    this.user.ValidAvatar = false;
+   // avatarImg.style.display='';
+    if (!isError && avatarImg.src.startsWith("http://whiteyellowpages")) {
+      this.user.ValidAvatar = true;
+    }else if (isError && this.user.Gender) 
+      // avatarImg.style.display='none';
+      avatarImg.src = `../../../../../assets/img/avatars/icon-${this.user.Gender}.png`;
+  }
+
+  isSuperAdminClick(){
+    alert(1);
+  }
 }
 
 

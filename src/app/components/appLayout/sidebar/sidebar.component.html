@@ -14,10 +14,10 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-      </div>
+        <img [src]="user | getUserAvatarSrc" class="img-circle elevation-4" alt="User Image">
+      </div> 
       <div class="info">
-        <a routerLink="\" class="d-block">{{user.FirstName}} {{user.LastName}}</a>
+        <a routerLink="\" class="d-block"><h5>{{user.FirstName}} {{user.LastName}}</h5></a>
       </div>
     </div>
 
@@ -27,7 +27,7 @@
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <!-- <li *ngIf="_userService.roleMatch(['Administrator'])" class="nav-item has-treeview menu-open"> -->
-        <li  class="nav-item has-treeview menu-open">
+        <li *ngIf="user.IsSuperAdmin" class="nav-item has-treeview menu-open">
           <a  class="nav-link" routerLinkActive="active" [ngClass]="{'active': usersActive.isActive || (createUserActive.isActive) }">
             <i class="nav-icon fa fa-edit"></i>
             <p>

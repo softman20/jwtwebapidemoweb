@@ -135,7 +135,7 @@
       <div>
         <p-dropdown [style]="{'width':'300px'}" [(ngModel)]="userToSwitch" 
         [options]="allUsers | userToSelectItem" placeholder="Select User" [filter]="true">
-       
+        <ng-template let-item pTemplate="selectedItem">{{item.FirstName+' '+item.LastName}}</ng-template>
         </p-dropdown>  
       </div>
       </div>

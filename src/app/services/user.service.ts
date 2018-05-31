@@ -29,7 +29,7 @@ export class UserService extends BaseService {
     this.onBusinessUnitChanged$ = new Subject();
   }
 
- 
+
   getBusinessUnit(): BusinessUnit {
     if (this._currentUserBusinessUnit) {
       return this._currentUserBusinessUnit;
@@ -41,9 +41,11 @@ export class UserService extends BaseService {
 
     let cacheBusinessUnitId = +localStorage.getItem(this.USER_BUSINESSUNIT_KEY);
     if (cacheBusinessUnitId) {
-      return _.find(this._currentUser.object.BusinessUnits, (o) => {
+      this._currentUserBusinessUnit = _.find(this._currentUser.object.BusinessUnits, (o) => {
         return o.Id === cacheBusinessUnitId;
       });
+      this.setBusinessUnit(this._currentUserBusinessUnit.Id);
+      return this._currentUserBusinessUnit;
     } else {
       let currentBu = this._currentUser.object.BusinessUnits[0];
       this.setBusinessUnit(currentBu.Id);
@@ -55,7 +57,7 @@ export class UserService extends BaseService {
     if (this._allUsers)
       return this._allUsers;
 
-      return this.getUsers();
+    return this.getUsers();
   }
 
   public setBusinessUnit(id: number) {
@@ -97,7 +99,9 @@ export class UserService extends BaseService {
         user.LastName = obj['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
         user.FirstName = obj['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'];
         user.SgId = obj['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
-
+        user.Gender = obj['gender'];
+        user.ValidAvatar=obj['validAvatar']=='True';
+        user.IsSuperAdmin=obj['isSuperAdmin']=='True';
         if (user.LastName.indexOf(",") > 0)
           user.LastName = user.LastName.substring(0, user.LastName.indexOf(","));
         //user.userName = obj['sgid'];
@@ -130,7 +134,7 @@ export class UserService extends BaseService {
   }
 
   getUserFromLDAP(sgid: string): Observable<LdapUser> {
-    let urlTOCall: string = `${environment.LDAP_API_ENDPOINT}${sgid}?KeyID=${environment.LDAP_API_KEY}&_fields=cn,mail,preferredGivenName,preferredName,givenName,sn`;
+    let urlTOCall: string = `${environment.LDAP_API_ENDPOINT}${sgid}?KeyID=${environment.LDAP_API_KEY}&_fields=cn,mail,preferredGivenName,preferredName,givenName,sn,personalTitle`;
     return this._http.get<LdapUser>(urlTOCall);
   }
 
@@ -171,4 +175,6 @@ export class UserService extends BaseService {
     var base64 = base64Url.replace('-', '+').replace('_', '/');
     return JSON.parse(window.atob(base64));
   }
+ 
+
 }
