@@ -52,7 +52,7 @@
         </li>
 
         <li *ngIf="_userService.roleMatch(['Administrator'])" class="nav-item has-treeview menu-open">
-          <a  class="nav-link"   [ngClass]="{'active':validationRules.isActive}">
+          <a  class="nav-link" [ngClass]="{'active': validationRules.isActive || (templateManagement.isActive) }">
             <i class="nav-icon fa fa-edit"></i>
             <p>
              Administration
@@ -65,8 +65,13 @@
                 <i class="fa fa-user-o nav-icon"></i>
                 <p>Validation Rules</p>
               </a>
-            </li>
-           
+            </li>  
+            <li class="nav-item">
+                <a routerLink="/templatemanagement" #templateManagement="routerLinkActive" routerLinkActive="active" class="nav-link">
+                  <i class="fa fa-user-o nav-icon"></i>
+                  <p>Template Management</p>
+                </a>
+              </li>            
           </ul>
         </li>
 

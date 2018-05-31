@@ -37,6 +37,8 @@ import { UserToSelectItemPipe } from './pipes/user-to-select-item.pipe';
 import { ValidationRuleService } from './services/validation-rule.service';
 import { ValidationRuleToOrgChartArrayPipe } from './pipes/validation-rule-to-org-chart-array.pipe';
 import { GetUserAvatarSrcPipe } from './pipes/get-user-avatar-src.pipe';
+import { TemplateManagementComponent } from './components/admin/template-management/template-management.component';
+import { SelectionCriteriaComponent } from './components/common/selection-criteria/selection-criteria.component';
  
 
 // export function authorizationServiceFactory(injector: Injector) {
@@ -61,7 +63,9 @@ import { GetUserAvatarSrcPipe } from './pipes/get-user-avatar-src.pipe';
     ValidationRulesComponent,
     UserToSelectItemPipe,
     ValidationRuleToOrgChartArrayPipe,
-    GetUserAvatarSrcPipe
+    GetUserAvatarSrcPipe,
+    TemplateManagementComponent,
+    SelectionCriteriaComponent
      
   ],
   imports: [

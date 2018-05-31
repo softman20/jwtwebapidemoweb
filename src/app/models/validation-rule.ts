@@ -22,4 +22,8 @@ export class ValidationRule {
         //this.AccountGroup.Id=-1;
         this.ValidationRuleUserRoles=new Array<ValidationRuleUserRole>();
     }
+
+    IsValid(){
+       return this.ProcessTypeId!=null && this.CompanyCode!=null && this.AccountGroup!=null && this.RequestTypeId!=null;
+    }
 }
