@@ -39,6 +39,7 @@ import { ValidationRuleToOrgChartArrayPipe } from './pipes/validation-rule-to-or
 import { GetUserAvatarSrcPipe } from './pipes/get-user-avatar-src.pipe';
 import { TemplateManagementComponent } from './components/admin/template-management/template-management.component';
 import { SelectionCriteriaComponent } from './components/common/selection-criteria/selection-criteria.component';
+import { TemplateManagementService } from './services/template-management.service';
  
 
 // export function authorizationServiceFactory(injector: Injector) {
@@ -93,7 +94,7 @@ import { SelectionCriteriaComponent } from './components/common/selection-criter
     ToggleButtonModule
   ],
   providers: [CarService, UserService,ConfirmationService,AuthGuard,HomeGuard,AuthenticationService,
-    BusinessUnitService,CompanyService,ValidationRuleService,
+    BusinessUnitService,CompanyService,ValidationRuleService,TemplateManagementService,
     UserResolve,
     { provide: HTTP_INTERCEPTORS, useClass: NgProgressInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthService, multi: true }

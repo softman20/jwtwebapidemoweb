@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ValidationRule } from '../../../models/validation-rule';
+import { TemplateSelectionRule } from '../../../models/template-selection-rule';
+import { TemplateManagementService } from '../../../services/template-management.service';
+import { TemplateControl } from '../../../models/template-control';
 
 @Component({
   selector: 'app-template-management',
@@ -6,10 +10,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./template-management.component.css']
 })
 export class TemplateManagementComponent implements OnInit {
+  templateSelectionRule: TemplateSelectionRule = new TemplateSelectionRule();
+  templateControls:TemplateControl[];
 
-  constructor() { }
+  constructor(private _templateManagementService:TemplateManagementService) { }
 
   ngOnInit() {
+    
   }
 
+
+  getTemplateControls(){
+    //get controles
+    this._templateManagementService.getTemplateControls().subscribe(data=>{
+      this.templateControls=data;
+    }
+  );
+  }
 }

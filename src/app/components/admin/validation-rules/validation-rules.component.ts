@@ -20,13 +20,8 @@ import { Roles } from '../../../models/enums/roles';
   styleUrls: ['./validation-rules.component.css']
 })
 export class ValidationRulesComponent implements OnInit {
-  selectedProcessType: string = '';
-  selectedRequestType: string = '';
-  selectedCompanyCode: Master = null;
-  selectedAccountGroup: Master = null;
-  companies: Master[];
-  accountGroups: Master[];
-  displayDialog: boolean = false;
+  displayAddValidationDialog: boolean = false;
+
   validationRule: ValidationRule = new ValidationRule();
 
   validationRuleProviders: User[];
@@ -68,32 +63,8 @@ export class ValidationRulesComponent implements OnInit {
       }
     )
   }
-  processTypeChanged() {
-    this.validationRuleSelectionChanged();
-    this.loadCompanies();
-    this.loadAccountGroups();
-    // this.validationRule = new ValidationRule();
-  }
+ 
 
-  loadCompanies() {
-    if (this.validationRule.ProcessTypeId) {
-      this._companyService.getCompanies(this._userService.getBusinessUnit().Id, this.validationRule.ProcessTypeId).subscribe(
-        (companyData) => {
-          this.companies = companyData;
-        }
-      );
-    }
-  }
-
-  loadAccountGroups() {
-    if (this.validationRule.ProcessTypeId) {
-      this._companyService.getAccountGroups(this._userService.getBusinessUnit().Id, this.validationRule.ProcessTypeId).subscribe(
-        (data) => {
-          this.accountGroups = data;
-        }
-      );
-    }
-  }
 
   showValidationRuleDialog(edit: boolean = false) {
     this.getValidationRulePotentielUsers(edit);
@@ -103,7 +74,7 @@ export class ValidationRulesComponent implements OnInit {
       this.selectedValidationRuleApprover2 = null;
       this.selectedValidationRuleAccountant = null;
     }
-    this.displayDialog = true;
+    this.displayAddValidationDialog = true;
   }
 
   addValidationRule() {
@@ -115,13 +86,13 @@ export class ValidationRulesComponent implements OnInit {
 
     this._validationUserService.addValidationRule(this.validationRule).subscribe(data => {
       this.validationRule.Id=data;
-      this.displayDialog = false;
+      this.displayAddValidationDialog = false;
     });
   }
 
   getValidationRuleUserRoles() {
-    this.validationRule.ProcessType = Helpers.ConvertLabelToMaster(this.processTypes).find(e => e.Id == this.validationRule.ProcessTypeId);
-    this.validationRule.RequestType = Helpers.ConvertLabelToMaster(this.requestTypes).find(e => e.Id == this.validationRule.RequestTypeId);
+    this.validationRule.ProcessType = Helpers.ConvertLabelToMaster(StaticDataModels.allProcessTypes).find(e => e.Id == this.validationRule.ProcessTypeId);
+    this.validationRule.RequestType = Helpers.ConvertLabelToMaster(StaticDataModels.allRequestTypes).find(e => e.Id == this.validationRule.RequestTypeId);
     this.validationRule.BusinessUnit = this._userService.getBusinessUnit();
 
     this._validationUserService.getValidationRuleUserRoles(this.validationRule).subscribe(data => {
@@ -146,7 +117,4 @@ export class ValidationRulesComponent implements OnInit {
     });
   }
 
-  validationRuleSelectionChanged() {
-    this.validationRule.ValidationRuleUserRoles = new Array<ValidationRuleUserRole>();
-  }
 }

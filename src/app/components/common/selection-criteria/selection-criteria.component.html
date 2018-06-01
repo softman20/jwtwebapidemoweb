@@ -6,9 +6,9 @@
           <b class="text-danger" *ngIf="processType.touched && processType.invalid">*</b>
         </label>
         <div>
-          <p-selectButton name="processType" (onChange)="processTypeChanged()" [options]="processTypes" #processType="ngModel" [(ngModel)]="validationRule.ProcessTypeId"
+          <p-selectButton name="processType" (onChange)="processTypeChanged()" [options]="processTypes" #processType="ngModel" [(ngModel)]="selectionCriteria.ProcessTypeId"
             required></p-selectButton>
-          {{validationRule.ProcessTypeId}}
+          {{selectionCriteria.ProcessTypeId}}
           <span class="text-danger" *ngIf="processType.touched && processType.invalid">Process Type is required</span>
         </div>
       </div>
@@ -18,9 +18,9 @@
         </label>
         <div>
           <p-dropdown appendTo="body" [options]="companies" (onChange)="validationRuleSelectionChanged()" #companyCode="ngModel" name="companyCode"
-            [(ngModel)]="validationRule.CompanyCode" filter="true" placeholder="Select Company" optionLabel="Name"
+            [(ngModel)]="selectionCriteria.CompanyCode" filter="true" placeholder="Select Company" optionLabel="Name"
             [showClear]="true" required></p-dropdown>
-          {{validationRule?.CompanyCode?.Id}}
+          {{selectionCriteria?.CompanyCode?.Id}}
         </div>
       </div>
     </div>
@@ -29,23 +29,22 @@
         <label for="" class=" control-label">Account Group</label>
         <div class=" ">
           <p-dropdown appendTo="body" [options]="accountGroups" (onChange)="validationRuleSelectionChanged()" #companyCode="ngModel"
-            name="accountGroups" [(ngModel)]="validationRule.AccountGroup" filter="true" placeholder="Select Account Group"
+            name="accountGroups" [(ngModel)]="selectionCriteria.AccountGroup" filter="true" placeholder="Select Account Group"
             optionLabel="Name" [showClear]="true" required></p-dropdown>
-          {{validationRule?.AccountGroup?.Id}}
+          {{selectionCriteria?.AccountGroup?.Id}}
         </div>
       </div>
-      <div class="form-group col-sm-6">
+      <div *ngIf="withRequestType" class="form-group col-sm-6">
         <label for="requestType" class=" control-label">Request Type
           <b class="text-danger" *ngIf="requestType.touched && requestType.invalid">*</b>
         </label>
         <div>
           <p-selectButton name="requestType" [options]="requestTypes" (onChange)="validationRuleSelectionChanged()" #requestType="ngModel"
-            [(ngModel)]="validationRule.RequestTypeId" required></p-selectButton>
-          {{validationRule.RequestTypeId}}
+            [(ngModel)]="selectionCriteria.RequestTypeId" required></p-selectButton>
+          {{selectionCriteria.RequestTypeId}}
           <span class="text-danger" *ngIf="requestType.touched && requestType.invalid">Request Type is required</span>
         </div>
       </div>
     </div>
   </div>
   </form>
-  

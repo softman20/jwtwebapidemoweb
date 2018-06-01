@@ -6,6 +6,7 @@ import { EventEmitter } from 'protractor';
 import { ValidationRuleUserRole } from '../../../models/validation-rule-user-role';
 import { CompanyService } from '../../../services/company.service';
 import { UserService } from '../../../services/user.service';
+import { StaticDataModels } from '../../../dataModels/staticDataModels';
 
 @Component({
   selector: 'app-selection-criteria',
@@ -13,39 +14,36 @@ import { UserService } from '../../../services/user.service';
   styleUrls: ['./selection-criteria.component.css']
 })
 export class SelectionCriteriaComponent implements OnInit {
-  @Input()
-  companies: Master[];
-  @Input()
-  processTypes: Array<SelectItem>;
-  @Input()
-  validationRule: ValidationRule;
-  @Input()
-  requestTypes: Array<SelectItem>;
-  @Input()
-  accountGroups: Master[];
 
- 
+  @Input()
+  selectionCriteria: ValidationRule;
+  @Input()
+  withRequestType: boolean = true;
+
+  accountGroups: Master[];
+  processTypes: Array<SelectItem> = StaticDataModels.processTypes;
+  requestTypes: Array<SelectItem> = StaticDataModels.allRequestTypes;
+  companies: Master[];
 
   constructor(private _companyService: CompanyService, private _userService: UserService) { }
 
   ngOnInit() {
   }
-   
+
 
   processTypeChanged() {
     this.validationRuleSelectionChanged();
     this.loadCompanies();
     this.loadAccountGroups();
-    // this.validationRule = new ValidationRule();
   }
 
   validationRuleSelectionChanged() {
-    this.validationRule.ValidationRuleUserRoles = new Array<ValidationRuleUserRole>();
+    this.selectionCriteria.ValidationRuleUserRoles = new Array<ValidationRuleUserRole>();
   }
 
   loadCompanies() {
-    if (this.validationRule.ProcessTypeId) {
-      this._companyService.getCompanies(this._userService.getBusinessUnit().Id, this.validationRule.ProcessTypeId).subscribe(
+    if (this.selectionCriteria.ProcessTypeId) {
+      this._companyService.getCompanies(this._userService.getBusinessUnit().Id, this.selectionCriteria.ProcessTypeId).subscribe(
         (companyData) => {
           this.companies = companyData;
         }
@@ -54,12 +52,14 @@ export class SelectionCriteriaComponent implements OnInit {
   }
 
   loadAccountGroups() {
-    if (this.validationRule.ProcessTypeId) {
-      this._companyService.getAccountGroups(this._userService.getBusinessUnit().Id, this.validationRule.ProcessTypeId).subscribe(
+    if (this.selectionCriteria.ProcessTypeId) {
+      this._companyService.getAccountGroups(this._userService.getBusinessUnit().Id, this.selectionCriteria.ProcessTypeId).subscribe(
         (data) => {
           this.accountGroups = data;
         }
       );
     }
   }
+
+
 }

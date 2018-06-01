@@ -30,7 +30,7 @@
           <!-- /.card-header -->
           <div class="card-body">
 
-            <p-dataTable #dtUsers [value]="users" loadingIcon="fa fa-spinner" [loading]="loading">
+            <p-dataTable #dtUsers [value]="users" loadingIcon="fa fa-spinner" [loading]="loading" [rows]="10" [paginator]="true">
                 <p-column styleClass="text-center">
               <ng-template  let-user="rowData" pTemplate="body">
                   <img [src]="user | getUserAvatarSrc" class="img-circle elevation-2" width="64">

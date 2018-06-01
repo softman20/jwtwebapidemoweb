@@ -10,7 +10,7 @@
           </div>
          
             <!-- selection criteria   -->
-            <app-selection-criteria [requestTypes]="requestTypes" [validationRule]="validationRule" [accountGroups]="accountGroups" [companies]="companies" [processTypes]="processTypes"></app-selection-criteria>
+            <app-selection-criteria [selectionCriteria]="validationRule"></app-selection-criteria>
             <!-- selection criteria   -->
  
             <div class="card-footer">
@@ -21,7 +21,7 @@
             </div>
            
 
-          <p-dialog header="Validation Rule" appendTo="body" [(visible)]="displayDialog" showEffect="fade" [modal]="true">
+          <p-dialog header="Validation Rule" appendTo="body" [(visible)]="displayAddValidationDialog" showEffect="fade" [modal]="true">
             <form #formAddValidationRule="ngForm">
               <fieldset>
                 <div class="card-body row" *ngIf="validationRule">
@@ -71,7 +71,7 @@
             </form>
             <p-footer>
               <div class=" ">
-                <button type="button" pButton icon="fa-close" (click)="this.displayDialog = false;" label="Cancel"></button>
+                <button type="button" pButton icon="fa-close" (click)="this.displayAddValidationDialog = false;" label="Cancel"></button>
                 <button type="button" [disabled]="!formAddValidationRule.valid" pButton icon="fa-check" (click)="addValidationRule()" label="Save"></button>
               </div>
             </p-footer>

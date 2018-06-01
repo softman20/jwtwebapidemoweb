@@ -1,11 +1,9 @@
-import { Master } from "./master";
-import { BusinessUnit } from "./business-unit";
-import { ValidationRuleUserRole } from "./validation-rule-user-role";
 import { SelectionCriteria } from "./selection-criteria";
+import { ValidationRuleUserRole } from "./validation-rule-user-role";
 import { Helpers } from "../helpers/helpers";
 import { StaticDataModels } from "../dataModels/staticDataModels";
 
-export class ValidationRule extends SelectionCriteria {
+export class TemplateSelectionRule extends SelectionCriteria {
     Id:number;  
     ValidationRuleUserRoles:ValidationRuleUserRole[];
     
@@ -16,11 +14,10 @@ export class ValidationRule extends SelectionCriteria {
     }
 
     IsValid(){
-       return this.ProcessTypeId!=null && this.CompanyCode!=null && this.AccountGroup!=null && this.RequestTypeId!=null;
+       return this.ProcessTypeId!=null && this.CompanyCode!=null && this.AccountGroup!=null;
     }
     
     LoadPropertiesFromID() {
-       
+       // this.ProcessType = Helpers.ConvertLabelToMaster(StaticDataModels.processTypes).find(e => e.Id == this.ProcessTypeId);
     }
-   
 }
