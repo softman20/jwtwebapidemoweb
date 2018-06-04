@@ -10,8 +10,8 @@ export class ValidationRule extends SelectionCriteria {
     ValidationRuleUserRoles:ValidationRuleUserRole[];
     
 
-    constructor(){
-      super();
+    constructor(businessUnit?: BusinessUnit) {
+      super(businessUnit);
         this.ValidationRuleUserRoles=new Array<ValidationRuleUserRole>();
     }
 

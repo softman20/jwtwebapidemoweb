@@ -23,8 +23,8 @@ export class ValidationRulesComponent implements OnInit {
   displayAddValidationDialog: boolean = false;
   displayCopyFromValidationDialog: boolean = false;
 
-  validationRule: ValidationRule = new ValidationRule();
-  validationRuleCopy: ValidationRule = new ValidationRule();
+  validationRule: ValidationRule = new ValidationRule(this._userService.getBusinessUnit());
+  validationRuleCopy: ValidationRule = new ValidationRule(this._userService.getBusinessUnit());
 
   validationRuleProviders: User[];
   validationRuleApprover1: User[];
@@ -100,10 +100,7 @@ export class ValidationRulesComponent implements OnInit {
   addValidationRuleFromCopy(){
     this.validationRuleCopy.ProcessType = Helpers.ConvertLabelToMaster(StaticDataModels.allProcessTypes).find(e => e.Id == this.validationRuleCopy.ProcessTypeId);
     this.validationRuleCopy.RequestType = Helpers.ConvertLabelToMaster(StaticDataModels.allRequestTypes).find(e => e.Id == this.validationRuleCopy.RequestTypeId);
-    this.validationRuleCopy.BusinessUnit = this._userService.getBusinessUnit();
-
-     
-
+   
 
     this._validationUserService.addValidationRuleFromCopy(this.validationRule, this.validationRuleCopy).subscribe(data => {
       if(data==0)
@@ -121,8 +118,7 @@ export class ValidationRulesComponent implements OnInit {
   getValidationRuleUserRoles() {
     this.validationRule.ProcessType = Helpers.ConvertLabelToMaster(StaticDataModels.allProcessTypes).find(e => e.Id == this.validationRule.ProcessTypeId);
     this.validationRule.RequestType = Helpers.ConvertLabelToMaster(StaticDataModels.allRequestTypes).find(e => e.Id == this.validationRule.RequestTypeId);
-    this.validationRule.BusinessUnit = this._userService.getBusinessUnit();
-
+   
     this._validationUserService.getValidationRuleUserRoles(this.validationRule).subscribe(data => {
       this.validationRule.ValidationRuleUserRoles = data;
 
