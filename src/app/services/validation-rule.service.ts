@@ -18,6 +18,11 @@ export class ValidationRuleService {
   addValidationRule(validationRule: ValidationRule): Observable<number> {
     return this._http.post<number>(environment.API_ENDPOINT + '/api/ValidationRule/', validationRule);
   }
+  addValidationRuleFromCopy(validationRule: ValidationRule,validationRuleCopy: ValidationRule): Observable<number> {
+const body={ValidationRule:validationRule,ValidationRuleCopyFrom:validationRuleCopy};
+    return this._http.post<number>(environment.API_ENDPOINT + '/api/ValidationRule/AddFromCopy', body);
+  }
+  
 
   getValidationRuleUserRoles(validationRule: ValidationRule): Observable<ValidationRuleUserRole[]> {
     return this._http.post<ValidationRuleUserRole[]>(environment.API_ENDPOINT + '/api/ValidationRule/GetValidationRuleUserRoles', validationRule);

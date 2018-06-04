@@ -153,7 +153,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
               this.user.LastName = userData.sn;
             }
             else this.user.LastName = userData.mail.substring(userData.mail.indexOf(".") + 1, userData.mail.indexOf("@"));
-            this.user.Gender = userData.personalTitle != null ? userData.personalTitle == 'Mr' ? "M" : "F" : "";
+            this.user.Gender = (userData.personalTitle != null && userData.personalTitle != "")  ? userData.personalTitle == 'Mr' ? "M" : "F" : "";
 
             this.manageUserAvatar(imgAvatar);
 

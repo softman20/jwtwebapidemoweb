@@ -22,7 +22,7 @@ export class SelectionCriteriaComponent implements OnInit {
 
   accountGroups: Master[];
   processTypes: Array<SelectItem> = StaticDataModels.processTypes;
-  requestTypes: Array<SelectItem> = StaticDataModels.allRequestTypes;
+  requestTypes: Array<SelectItem> = StaticDataModels.requestTypes;
   companies: Master[];
 
   constructor(private _companyService: CompanyService, private _userService: UserService) { }
@@ -39,6 +39,7 @@ export class SelectionCriteriaComponent implements OnInit {
 
   validationRuleSelectionChanged() {
     this.selectionCriteria.ValidationRuleUserRoles = new Array<ValidationRuleUserRole>();
+    
   }
 
   loadCompanies() {
@@ -46,6 +47,7 @@ export class SelectionCriteriaComponent implements OnInit {
       this._companyService.getCompanies(this._userService.getBusinessUnit().Id, this.selectionCriteria.ProcessTypeId).subscribe(
         (companyData) => {
           this.companies = companyData;
+          this.selectionCriteria.CompanyCode=null;
         }
       );
     }
@@ -56,6 +58,7 @@ export class SelectionCriteriaComponent implements OnInit {
       this._companyService.getAccountGroups(this._userService.getBusinessUnit().Id, this.selectionCriteria.ProcessTypeId).subscribe(
         (data) => {
           this.accountGroups = data;
+          this.selectionCriteria.AccountGroup=null;
         }
       );
     }

@@ -7,7 +7,7 @@
         </label>
         <div>
           <p-selectButton name="processType" (onChange)="processTypeChanged()" [options]="processTypes" #processType="ngModel" [(ngModel)]="selectionCriteria.ProcessTypeId"
-            required></p-selectButton>
+          [style]="{'min-width':'231px'}" required></p-selectButton>
           {{selectionCriteria.ProcessTypeId}}
           <span class="text-danger" *ngIf="processType.touched && processType.invalid">Process Type is required</span>
         </div>
@@ -19,7 +19,7 @@
         <div>
           <p-dropdown appendTo="body" [options]="companies" (onChange)="validationRuleSelectionChanged()" #companyCode="ngModel" name="companyCode"
             [(ngModel)]="selectionCriteria.CompanyCode" filter="true" placeholder="Select Company" optionLabel="Name"
-            [showClear]="true" required></p-dropdown>
+            [showClear]="true" [style]="{'min-width':'150px'}" required></p-dropdown>
           {{selectionCriteria?.CompanyCode?.Id}}
         </div>
       </div>
@@ -30,7 +30,7 @@
         <div class=" ">
           <p-dropdown appendTo="body" [options]="accountGroups" (onChange)="validationRuleSelectionChanged()" #companyCode="ngModel"
             name="accountGroups" [(ngModel)]="selectionCriteria.AccountGroup" filter="true" placeholder="Select Account Group"
-            optionLabel="Name" [showClear]="true" required></p-dropdown>
+            optionLabel="Name" [showClear]="true" [style]="{'min-width':'150px'}" required></p-dropdown>
           {{selectionCriteria?.AccountGroup?.Id}}
         </div>
       </div>
@@ -40,7 +40,7 @@
         </label>
         <div>
           <p-selectButton name="requestType" [options]="requestTypes" (onChange)="validationRuleSelectionChanged()" #requestType="ngModel"
-            [(ngModel)]="selectionCriteria.RequestTypeId" required></p-selectButton>
+            [(ngModel)]="selectionCriteria.RequestTypeId" [style]="{'min-width':'253px'}" required></p-selectButton>
           {{selectionCriteria.RequestTypeId}}
           <span class="text-danger" *ngIf="requestType.touched && requestType.invalid">Request Type is required</span>
         </div>

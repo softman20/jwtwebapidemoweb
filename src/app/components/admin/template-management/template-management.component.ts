@@ -21,7 +21,7 @@ export class TemplateManagementComponent implements OnInit {
 
 
   getTemplateControls(){
-    //get controles
+    //get template controls
     this._templateManagementService.getTemplateControls().subscribe(data=>{
       this.templateControls=data;
     }

@@ -21,8 +21,10 @@ import { Roles } from '../../../models/enums/roles';
 })
 export class ValidationRulesComponent implements OnInit {
   displayAddValidationDialog: boolean = false;
+  displayCopyFromValidationDialog: boolean = false;
 
   validationRule: ValidationRule = new ValidationRule();
+  validationRuleCopy: ValidationRule = new ValidationRule();
 
   validationRuleProviders: User[];
   validationRuleApprover1: User[];
@@ -38,7 +40,7 @@ export class ValidationRulesComponent implements OnInit {
   processTypes: Array<SelectItem> = StaticDataModels.processTypes;
   requestTypes: Array<SelectItem> = StaticDataModels.allRequestTypes;
   allRoles: Array<Master> = StaticDataModels.allRoles;
- 
+
   constructor(private confirmationService: ConfirmationService, private toastr: ToastrService, private _companyService: CompanyService, private _userService: UserService, private _validationUserService: ValidationRuleService) { }
 
   ngOnInit() {
@@ -63,7 +65,7 @@ export class ValidationRulesComponent implements OnInit {
       }
     )
   }
- 
+
 
 
   showValidationRuleDialog(edit: boolean = false) {
@@ -77,6 +79,10 @@ export class ValidationRulesComponent implements OnInit {
     this.displayAddValidationDialog = true;
   }
 
+  showValidationRuleCopyDialog() {
+    this.displayCopyFromValidationDialog = true;
+  }
+
   addValidationRule() {
     this.validationRule.ValidationRuleUserRoles = new Array<ValidationRuleUserRole>();
     this.validationRule.ValidationRuleUserRoles.push({ Role: this.allRoles.find(e => e.Id == Roles.Provider), RoleId: Roles.Provider, User: this.selectedValidationRuleProvider });
@@ -85,8 +91,30 @@ export class ValidationRulesComponent implements OnInit {
     this.validationRule.ValidationRuleUserRoles.push({ Role: this.allRoles.find(e => e.Id == Roles.Accountant), RoleId: Roles.Accountant, User: this.selectedValidationRuleAccountant });
 
     this._validationUserService.addValidationRule(this.validationRule).subscribe(data => {
-      this.validationRule.Id=data;
+      this.validationRule.Id = data;
       this.displayAddValidationDialog = false;
+      this.toastr.success("Validation rule added successfully !");
+    });
+  }
+
+  addValidationRuleFromCopy(){
+    this.validationRuleCopy.ProcessType = Helpers.ConvertLabelToMaster(StaticDataModels.allProcessTypes).find(e => e.Id == this.validationRuleCopy.ProcessTypeId);
+    this.validationRuleCopy.RequestType = Helpers.ConvertLabelToMaster(StaticDataModels.allRequestTypes).find(e => e.Id == this.validationRuleCopy.RequestTypeId);
+    this.validationRuleCopy.BusinessUnit = this._userService.getBusinessUnit();
+
+     
+
+
+    this._validationUserService.addValidationRuleFromCopy(this.validationRule, this.validationRuleCopy).subscribe(data => {
+      if(data==0)
+        this.toastr.info("There's no validation rule for this selection !");
+        else{
+          this.validationRule.Id = data;
+          this.displayCopyFromValidationDialog = false;
+          this.getValidationRuleUserRoles();
+          this.validationRuleCopy=new ValidationRule();
+        this.toastr.success("Validation rule added successfully !");
+        }
     });
   }
 
@@ -97,7 +125,7 @@ export class ValidationRulesComponent implements OnInit {
 
     this._validationUserService.getValidationRuleUserRoles(this.validationRule).subscribe(data => {
       this.validationRule.ValidationRuleUserRoles = data;
-      
+
       if (data && data.length)
         this.validationRule.Id = data[0].ValidationRuleId;
       else this.validationRule.Id = 0;

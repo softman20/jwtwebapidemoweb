@@ -15,7 +15,9 @@
  
             <div class="card-footer">
               <button (click)="getValidationRuleUserRoles()" [disabled]="!validationRule.IsValid()" type="submit" class="btn btn-info">View</button>
-              <button *ngIf="validationRule?.ValidationRuleUserRoles==null" (click)="showValidationRuleDialog()" type="submit" class="btn btn-success float-right">Add New</button>
+              
+              <button *ngIf="validationRule?.ValidationRuleUserRoles==null" (click)="showValidationRuleDialog()" type="submit" class="btn btn-success float-right ml-1">Add New</button>
+              <button *ngIf="validationRule?.ValidationRuleUserRoles==null" (click)="showValidationRuleCopyDialog()" type="submit" class="btn btn-primary float-right">Copy From</button>
               <button *ngIf="validationRule?.ValidationRuleUserRoles?.length" (click)="showValidationRuleDialog(true)" type="submit" class="btn btn-success float-right ml-1">Edit</button>
               <button *ngIf="validationRule?.ValidationRuleUserRoles?.length" (click)="deleteValidationRuleDialog()" type="submit" class="btn btn-danger float-right">Delete</button>
             </div>
@@ -76,6 +78,15 @@
               </div>
             </p-footer>
           </p-dialog>
+          <p-dialog header="Copy From Validation Rule Selection" appendTo="body" [(visible)]="displayCopyFromValidationDialog" showEffect="fade" [modal]="true">
+              <app-selection-criteria [selectionCriteria]="validationRuleCopy"></app-selection-criteria>
+              <p-footer>
+                  <div class=" ">
+                    <button type="button" pButton icon="fa-close" (click)="this.displayCopyFromValidationDialog = false;" label="Cancel"></button>
+                    <button type="button" [disabled]="!validationRuleCopy.IsValid()" pButton icon="fa-check" (click)="addValidationRuleFromCopy()" label="Copy from this selection"></button>
+                  </div>
+                </p-footer>
+              </p-dialog>
 
           <p-organizationChart *ngIf="validationRule?.ValidationRuleUserRoles?.length || validationRule?.ValidationRuleUserRoles==null" [value]="validationRule?.ValidationRuleUserRoles | validationRuleToOrgChartArray" styleClass="validationrule">
             <ng-template let-node pTemplate="person">
