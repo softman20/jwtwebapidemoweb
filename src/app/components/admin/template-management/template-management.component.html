@@ -12,16 +12,67 @@
           <!-- selection criteria   -->
           <app-selection-criteria [selectionCriteria]="templateSelectionRule" [withRequestType]="false"></app-selection-criteria>
           <div class="card-footer">
-              <button (click)="getTemplateControls()" [disabled]="!templateSelectionRule.IsValid()" type="submit" class="btn btn-success">View</button>
+              <button (click)="getTemplateControls()" [disabled]="!templateSelectionRule.IsValid()" type="submit" class="btn btn-success"><i class="fa fa-eye" ></i> View</button>
               <button *ngIf="templateSelectionRule?.ValidationRuleUserRoles==null" (click)="showValidationRuleDialog()" type="submit" class="btn btn-success float-right">Add New</button>
               <button *ngIf="templateSelectionRule?.ValidationRuleUserRoles?.length" (click)="showValidationRuleDialog(true)" type="submit" class="btn btn-success float-right ml-1">Edit</button>
               <button *ngIf="templateSelectionRule?.ValidationRuleUserRoles?.length" (click)="deleteValidationRuleDialog()" type="submit" class="btn btn-danger float-right">Delete</button>
             </div>
         </div>
-<p-dataTable [value]="templateControls">
-  <p-column field="Label" header="label"></p-column>  
-  <p-column field="SapTable" header="SapTable"></p-column>  
-  <p-column field="SapField" header="SapField"></p-column>  
+    
+      
+<p-dataTable *ngIf="templateControls?.length || !templateControls" [value]="templateControls" emptyMessage="No Template Configuration for this selection">
+  <p-column field="Label" header="label" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>  
+
+  <p-column header="Mandatory">
+    <ng-template let-templateControls="rowData" pTemplate="body">
+        <p-inputSwitch [(ngModel)]="templateControls.TemplateControlConfig.Mandatory"></p-inputSwitch>
+       
+    </ng-template>
+  </p-column>  
+  <p-column   header="Display">
+      <ng-template let-templateControls="rowData" pTemplate="body">
+          <p-inputSwitch [(ngModel)]="templateControls.TemplateControlConfig.Display"></p-inputSwitch>
+      </ng-template>
+  </p-column>  
+  <p-column   header="Capital">
+      <ng-template let-templateControls="rowData" pTemplate="body">
+          <p-inputSwitch [(ngModel)]="templateControls.TemplateControlConfig.Capital"></p-inputSwitch>
+      </ng-template>
+  </p-column>  
+  <p-column  header="AlterableProvider">
+      <ng-template let-templateControls="rowData" pTemplate="body">
+          <p-inputSwitch [(ngModel)]="templateControls.TemplateControlConfig.AlterableProvider"></p-inputSwitch>
+      </ng-template>
+  </p-column>  
+  <p-column   header="AlterableApprover1">
+      <ng-template let-templateControls="rowData" pTemplate="body">
+          <p-inputSwitch [(ngModel)]="templateControls.TemplateControlConfig.AlterableApprover1"></p-inputSwitch>
+      </ng-template>
+  </p-column>  
+  <p-column   header="AlterableApprover2">
+      <ng-template let-templateControls="rowData" pTemplate="body">
+          <p-inputSwitch [(ngModel)]="templateControls.TemplateControlConfig.AlterableApprover2"></p-inputSwitch>
+      </ng-template>
+  </p-column>  
+  <p-column   header="AlterableApprover3">
+      <ng-template let-templateControls="rowData" pTemplate="body">
+          <p-inputSwitch [(ngModel)]="templateControls.TemplateControlConfig.AlterableApprover3"></p-inputSwitch>
+      </ng-template>
+  </p-column>  
+  <p-column field="SapTable" header="SapTable" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>  
+  <p-column field="SapField" header="SapField" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>  
+  <p-column field="TemplateControlConfig.DefaultValue" header="DefaultValue">
+      <ng-template let-templateControls="rowData" pTemplate="body">
+          <input type="text"   name="DefaultValue" #DefaultValue="ngModel" [(ngModel)]="templateControls.TemplateControlConfig.DefaultValue" required class="form-control"
+          placeholder="DefaultValue">
+        </ng-template>
+  </p-column>  
+  <p-footer>
+      <div class="ui-helper-clearfix" style="width:100%">
+        <button type="button" *ngIf="templateControls?.length"  class="btn btn-success float-right" (click)="updateTemplate()"><i class="fa fa-floppy-o"></i> Save Template Configuration</button>
+        <button type="button" *ngIf="!templateControls"  class="btn btn-info float-right" (click)="addNewTemplate()"><i class="fa fa-plus"></i> Add New</button>
+      </div>
+    </p-footer>
 </p-dataTable>
       </div>
 

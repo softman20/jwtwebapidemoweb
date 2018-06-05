@@ -15,4 +15,11 @@ export class TemplateManagementService {
     return this._http.post<TemplateControl[]>(environment.API_ENDPOINT+'/api/TemplateManagement/',templateSelectionRule);
   }
 
+  addNewTemplate(templateSelectionRule:TemplateSelectionRule):Observable<TemplateControl[]>{
+    return this._http.post<TemplateControl[]>(environment.API_ENDPOINT+'/api/TemplateManagement/AddNewTemplate',templateSelectionRule);
+  }
+
+  updateTemplate(templateControls:TemplateControl[]):Observable<boolean>{
+    return this._http.put<boolean>(environment.API_ENDPOINT+'/api/TemplateManagement/',templateControls);
+  }
 }
