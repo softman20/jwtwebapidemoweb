@@ -10,6 +10,7 @@ export class SelectionCriteria {
     ProcessTypeId: number;
     RequestType: Master;
     RequestTypeId: number;
+    Organization: Master;
 
     /**
      *

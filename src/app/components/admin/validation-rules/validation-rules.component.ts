@@ -47,7 +47,9 @@ export class ValidationRulesComponent implements OnInit {
     // this.subscriptions.push(this._userService.onBusinessUnitChanged$.subscribe(bu => { this.loadCompanies(); }));   
     // this.processTypeChanged(); 
   }
-
+  onValidationRuleSelectionChange(){
+    this.validationRule.ValidationRuleUserRoles = new Array<ValidationRuleUserRole>();
+  }
   getValidationRulePotentielUsers(edit: boolean = false) {
     this._validationUserService.getValidationRulePotentielUsers(this.validationRule).subscribe(
       (data: User[]) => {

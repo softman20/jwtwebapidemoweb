@@ -11,6 +11,7 @@ export class Authorization {
     CompanyCode: Master;
     ProcessType: Master;
     ProcessTypeId: number=-1;
+    Organization:Master;
 
     constructor()
     {
@@ -18,5 +19,7 @@ export class Authorization {
         this.BusinessUnit.Id=-1;
         this.CompanyCode=new Master();
         this.CompanyCode.Id=-1;
+        this.Organization=new Master();
+        this.Organization.Id=-1;
     }
 }

@@ -7,19 +7,18 @@
             <h3 class="card-title">
               Validation Rules Management
             </h3>
-          </div>
-         
+          </div>         
             <!-- selection criteria   -->
-            <app-selection-criteria [selectionCriteria]="validationRule"></app-selection-criteria>
+            <app-selection-criteria [selectionCriteria]="validationRule" (onValidationRuleSelectionChange)="onValidationRuleSelectionChange()"></app-selection-criteria>
             <!-- selection criteria   -->
  
             <div class="card-footer">
-              <button (click)="getValidationRuleUserRoles()" [disabled]="!validationRule.IsValid()" type="submit" class="btn btn-info">View</button>
+              <button (click)="getValidationRuleUserRoles()" [disabled]="!validationRule.IsValid()" type="submit" class="btn btn-info"><i class="fa fa-eye" ></i> View</button>
               
-              <button *ngIf="validationRule?.ValidationRuleUserRoles==null" (click)="showValidationRuleDialog()" type="submit" class="btn btn-success float-right ml-1">Add New</button>
-              <button *ngIf="validationRule?.ValidationRuleUserRoles==null" (click)="showValidationRuleCopyDialog()" type="submit" class="btn btn-primary float-right">Copy From</button>
-              <button *ngIf="validationRule?.ValidationRuleUserRoles?.length" (click)="showValidationRuleDialog(true)" type="submit" class="btn btn-success float-right ml-1">Edit</button>
-              <button *ngIf="validationRule?.ValidationRuleUserRoles?.length" (click)="deleteValidationRuleDialog()" type="submit" class="btn btn-danger float-right">Delete</button>
+              <button *ngIf="validationRule?.ValidationRuleUserRoles==null" (click)="showValidationRuleDialog()" type="submit" class="btn btn-success float-right ml-1"><i class="fa fa-plus"></i> Add New</button>
+              <button *ngIf="validationRule?.ValidationRuleUserRoles==null" (click)="showValidationRuleCopyDialog()" type="submit" class="btn btn-primary float-right"><i class="fa fa-clone"></i> Copy From</button>
+              <button *ngIf="validationRule?.ValidationRuleUserRoles?.length" (click)="showValidationRuleDialog(true)" type="submit" class="btn btn-success float-right ml-1"><i class="fa fa-pencil-square-o"></i> Edit</button>
+              <button *ngIf="validationRule?.ValidationRuleUserRoles?.length" (click)="deleteValidationRuleDialog()" type="submit" class="btn btn-danger float-right"><i class="fa fa-trash-o"></i> Delete</button>
             </div>
            
 

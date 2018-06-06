@@ -93,6 +93,7 @@
                   <p-column field="Role.Name" header="ROLE" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                   <p-column field="CompanyCode.Name" header="Company Code" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                   <p-column field="ProcessType.Name" header="Process Type" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
+                  <p-column field="Organization.Name" header="Organization" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                   <p-column>
                     <ng-template let-authorization="rowData" pTemplate="body">
                       <button pButton type="button" (click)="deleteAuthorization(authorization)" class="ui-button-danger" icon="fa-close"></button>
@@ -109,46 +110,59 @@
                   <form #formAddUserAuthorization="ngForm">
                     <fieldset>
                       <div class="card-body row" *ngIf="authorization">
-                        <div class="form-group col-md-2">
+                        <div class="container-fluid col-md-12">
+                        <div class="row">
+                        <div class="form-group col-md-4">
                           <label for="authRole">Role</label>
                           <div class="">
-                            <p-dropdown appendTo="body" name="authRole" name="authRole" showClear="true" [style]="{'width':'150px'}" [(ngModel)]="authorization.Role"
+                            <p-dropdown appendTo="body" name="authRole" name="authRole" showClear="true" [style]="{'min-width':'150px'}" [(ngModel)]="authorization.Role"
                               [options]="roles" placeholder="Select a Role" inputId="Id" optionLabel="Name" [filter]="true"
                               required></p-dropdown>
                               {{authorization?.Role?.Id}}
                           </div>
 
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                           <label for="authBusinessUnit">Business Unit</label>
                           <div class="">
-                            <p-dropdown appendTo="body" [style]="{'width':'220px'}" name="authBusinessUnit" (onChange)="getComanies()" [(ngModel)]="authorization.BusinessUnit"
+                            <p-dropdown appendTo="body" [style]="{'min-width':'150px'}" name="authBusinessUnit" (onChange)="getComanies()" [(ngModel)]="authorization.BusinessUnit"
                               [options]="businessUnits" inputId="Id" optionLabel="Name" [filter]="true"></p-dropdown>
                             {{authorization.BusinessUnit?.Id}}
                           </div>
                         </div>
-
-                        <div class="form-group col-md-3">
-                          <label for="authCompanyCode">Company Code</label>
-                          <div class="">
-                            <p-dropdown appendTo="body" [style]="{'width':'230px'}" name="authCompanyCode" [(ngModel)]="authorization.CompanyCode" (onChange)="companyCodeChanged()"
-                              [options]="companies" inputId="Id" optionLabel="Name" [filter]="true"></p-dropdown>
-                            {{authorization.CompanyCode?.Id}}
-                          </div>
-                        </div>
-
                         <div class="form-group col-md-4">
+                            <label for="authCompanyCode">Company Code</label>
+                            <div class="">
+                              <p-dropdown appendTo="body" [style]="{'min-width':'150px'}" name="authCompanyCode" [(ngModel)]="authorization.CompanyCode" (onChange)="companyCodeChanged()"
+                                [options]="companies" inputId="Id" optionLabel="Name" [filter]="true"></p-dropdown>
+                              {{authorization.CompanyCode?.Id}}
+                            </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                      
+
+                        <div class="form-group col-md-8">
                           <label for="processType" class=" control-label">Proccess Type
                             <b class="text-danger" *ngIf="processType.touched && processType.invalid">*</b>
                           </label>
                           <div>
-                            <p-selectButton name="processType" [options]="processTypes" #processType="ngModel" [(ngModel)]="authorization.ProcessTypeId"
+                            <p-selectButton name="processType" [style]="{'min-width':'301px'}" (onChange)="processTypeChanged()" [options]="processTypes" #processType="ngModel" [(ngModel)]="authorization.ProcessTypeId"
                                required></p-selectButton>
                             {{authorization.ProcessTypeId}}
                             <span class="text-danger" *ngIf="processType.touched && processType.invalid">Process Type is required</span>
                           </div>
                         </div>
-
+                        <div class="form-group col-md-4">
+                            <label for="authOrganization">{{authorization.ProcessTypeId==1 ? 'Purchasing':authorization.ProcessTypeId==2?'Sales':''}}  Organization</label>
+                            <div class="">
+                              <p-dropdown appendTo="body" [style]="{'min-width':'150px'}" name="authOrganization" [(ngModel)]="authorization.Organization"
+                                [options]="organizations" inputId="Id" optionLabel="Name" [filter]="true"></p-dropdown>
+                              {{authorization.Organization?.Id}}
+                            </div>
+                          </div>
+                      </div>
+                    </div>
                       </div>
                     </fieldset>
                   </form>

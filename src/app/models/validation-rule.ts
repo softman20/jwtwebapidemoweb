@@ -16,7 +16,7 @@ export class ValidationRule extends SelectionCriteria {
     }
 
     IsValid(){
-       return this.ProcessTypeId!=null && this.CompanyCode!=null && this.AccountGroup!=null && this.RequestTypeId!=null;
+       return this.ProcessTypeId!=null && this.CompanyCode!=null && this.AccountGroup!=null && this.RequestTypeId!=null && this.Organization!=null ; 
     }
     
     LoadPropertiesFromID() {

@@ -13,6 +13,7 @@ import { UserService } from '../../../../services/user.service';
 import { BaseComponent } from '../../../base/base.component';
 import { Helpers } from '../../../../helpers/helpers';
 import { StaticDataModels } from '../../../../dataModels/staticDataModels';
+import { OrganizationService } from '../../../../services/organization.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -21,19 +22,18 @@ import { StaticDataModels } from '../../../../dataModels/staticDataModels';
 })
 export class SignUpComponent extends BaseComponent implements OnInit {
   user: User = new User();
-  roles: Role[]=StaticDataModels.allRoles;
+  roles: Role[] = StaticDataModels.allRoles;
   businessUnits: BusinessUnit[];
   companies: Master[];
+  organizations: Master[];
   userSgid: string;
   editMode: boolean = false;
   displayDialog: boolean;
   authorization: Authorization = new Authorization();
   loading: boolean = false;
   processTypes: Array<SelectItem> = StaticDataModels.allProcessTypes;
- // validAvatar: boolean = false;
-  // avatarSrc:string=`http://whiteyellowpages.eworkplace.saint-gobain.com/Photos/${this.user.SgId}.jpg`;
 
-  constructor(private _companyService: CompanyService, private _userService: UserService, private router: Router,
+  constructor(private _companyService: CompanyService, private _userService: UserService, private _organizationService: OrganizationService, private router: Router,
     private _activatedRoute: ActivatedRoute, private toastr: ToastrService, private _confirmationService: ConfirmationService) { super(); }
 
   ngOnInit() {
@@ -45,16 +45,14 @@ export class SignUpComponent extends BaseComponent implements OnInit {
         this._userService.getUser(this.userSgid).subscribe(
           (userData) => {
             this.user = userData;
-            //  this.avatarSrc= this.user.ValidAvatar? `http://whiteyellowpages.eworkplace.saint-gobain.com/Photos/${this.user.SgId}.jpg`:`../../../../../assets/img/avatars/icon-${this.user.Gender}.png`
             this.editMode = true;
             this.loading = false;
           }
         );
       }
-     // this.getRoles();
-      this.getBusinessUnits();
 
-      //this.getComanies(true);
+      this.getBusinessUnits();
+      this.getOrganizations();
     });
 
 
@@ -68,6 +66,16 @@ export class SignUpComponent extends BaseComponent implements OnInit {
         this.authorization.CompanyCode = this.companies.find(e => e.Id == -1);
       }
     );
+  }
+
+  getOrganizations() {
+    this._organizationService.getOrganizations(this.authorization.BusinessUnit.Id, this.authorization.ProcessTypeId).subscribe(data => {
+      this.organizations = data;
+      this.authorization.Organization = this.organizations.find(e => e.Id == -1);
+    });
+  }
+  processTypeChanged() {
+    this.getOrganizations();
   }
   getBusinessUnits() {
     this._userService.getAllBusinessUnits().subscribe(
@@ -153,7 +161,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
               this.user.LastName = userData.sn;
             }
             else this.user.LastName = userData.mail.substring(userData.mail.indexOf(".") + 1, userData.mail.indexOf("@"));
-            this.user.Gender = (userData.personalTitle != null && userData.personalTitle != "")  ? userData.personalTitle == 'Mr' ? "M" : "F" : "";
+            this.user.Gender = (userData.personalTitle != null && userData.personalTitle != "") ? userData.personalTitle == 'Mr' ? "M" : "F" : "";
 
             this.manageUserAvatar(imgAvatar);
 
@@ -176,6 +184,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
     this.authorization = new Authorization();
     this.authorization.BusinessUnit = this.businessUnits.find(e => e.Id == -1);
     this.authorization.CompanyCode = this.companies.find(e => e.Id == -1);
+    this.authorization.Organization = this.organizations.find(e => e.Id == -1);
     this.getComanies();
     this.displayDialog = true;
   }
@@ -189,9 +198,18 @@ export class SignUpComponent extends BaseComponent implements OnInit {
   checkIfAuthorizationExist(): boolean {
     let exist: boolean = false;
 
-
+    //check if exist Organization level
+    if (this.authorization.ProcessTypeId != -1) {
+      if (this.user.Authorizations.find(e =>
+        (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id == -1)
+        && (e.CompanyCode.Id == this.authorization.CompanyCode.Id || e.CompanyCode.Id == -1)
+        && (e.ProcessTypeId == this.authorization.ProcessTypeId || e.ProcessTypeId == -1)
+        && (e.Organization.Id == this.authorization.Organization.Id || e.Organization.Id == -1)
+        &&  e.Role.Id == this.authorization.Role.Id))
+        exist = true;
+    }
     //check if exist Process Type level
-    if (this.authorization.CompanyCode.Id != -1) {
+    else if (this.authorization.CompanyCode.Id != -1) {
       if (this.user.Authorizations.find(e =>
         (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id == -1)
         && (e.CompanyCode.Id == this.authorization.CompanyCode.Id || e.CompanyCode.Id == -1)
@@ -218,6 +236,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
 
     return exist;
   }
+
   addAuthorization() {
 
     if (this.checkIfAuthorizationExist())
@@ -225,7 +244,6 @@ export class SignUpComponent extends BaseComponent implements OnInit {
     else {
 
       //get ProcessType
-
       this.authorization.ProcessType = Helpers.ConvertLabelToMaster(this.processTypes).find(e => e.Id == this.authorization.ProcessTypeId);
       //delete sub authorizations if exist
       this.deleteSubAuthorizationIfExist();
@@ -253,6 +271,12 @@ export class SignUpComponent extends BaseComponent implements OnInit {
         e.CompanyCode.Id == this.authorization.CompanyCode.Id &&
         e.BusinessUnit.Id == this.authorization.BusinessUnit.Id && e.Role.Id == this.authorization.Role.Id);
     }
+    else if (this.authorization.Organization.Id == -1) {
+      subAuthorizaitons = this.user.Authorizations.filter(e =>
+        e.ProcessTypeId== this.authorization.ProcessTypeId &&
+        e.CompanyCode.Id == this.authorization.CompanyCode.Id &&
+        e.BusinessUnit.Id == this.authorization.BusinessUnit.Id && e.Role.Id == this.authorization.Role.Id);
+    }
     this.user.Authorizations = this.user.Authorizations.filter(e => !subAuthorizaitons.find(a => a === e));
   }
 
@@ -276,15 +300,15 @@ export class SignUpComponent extends BaseComponent implements OnInit {
 
   avatarLoaded(avatarImg: any, isError: boolean = false) {
     this.user.ValidAvatar = false;
-   // avatarImg.style.display='';
+    // avatarImg.style.display='';
     if (!isError && avatarImg.src.startsWith("http://whiteyellowpages")) {
       this.user.ValidAvatar = true;
-    }else if (isError && this.user.Gender) 
+    } else if (isError && this.user.Gender)
       // avatarImg.style.display='none';
       avatarImg.src = `../../../../../assets/img/avatars/icon-${this.user.Gender}.png`;
   }
 
-  isSuperAdminClick(){
+  isSuperAdminClick() {
     alert(1);
   }
 }

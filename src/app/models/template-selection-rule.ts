@@ -15,7 +15,7 @@ export class TemplateSelectionRule extends SelectionCriteria {
     }
 
     IsValid(){
-       return this.ProcessTypeId!=null && this.CompanyCode!=null && this.AccountGroup!=null;
+       return this.ProcessTypeId!=null && this.CompanyCode!=null && this.AccountGroup!=null && this.Organization!=null;
     }
     
     LoadPropertiesFromID() {

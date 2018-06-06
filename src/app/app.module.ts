@@ -40,6 +40,7 @@ import { GetUserAvatarSrcPipe } from './pipes/get-user-avatar-src.pipe';
 import { TemplateManagementComponent } from './components/admin/template-management/template-management.component';
 import { SelectionCriteriaComponent } from './components/common/selection-criteria/selection-criteria.component';
 import { TemplateManagementService } from './services/template-management.service';
+import { OrganizationService } from './services/organization.service';
  
 
 // export function authorizationServiceFactory(injector: Injector) {
@@ -94,7 +95,7 @@ import { TemplateManagementService } from './services/template-management.servic
     ToggleButtonModule
   ],
   providers: [CarService, UserService,ConfirmationService,AuthGuard,HomeGuard,AuthenticationService,
-    BusinessUnitService,CompanyService,ValidationRuleService,TemplateManagementService,
+    BusinessUnitService,CompanyService,ValidationRuleService,TemplateManagementService,OrganizationService,
     UserResolve,
     { provide: HTTP_INTERCEPTORS, useClass: NgProgressInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthService, multi: true }
