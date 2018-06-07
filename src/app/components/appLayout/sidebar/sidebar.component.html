@@ -27,7 +27,54 @@
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <!-- <li *ngIf="_userService.roleMatch(['Administrator'])" class="nav-item has-treeview menu-open"> -->
-        <li *ngIf="user.IsSuperAdmin" class="nav-item has-treeview menu-open">
+       
+                <li  class="nav-item has-treeview menu-open">
+                  <a  class="nav-link " [ngClass]="{'active': suppliercreation.isActive || (customercreation.isActive) }">
+                    <i class="nav-icon fa fa-edit"></i>
+                    <p>
+                     Request Creation
+                      <i class="fa fa-angle-left right"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a routerLink="/suppliercreation" #suppliercreation="routerLinkActive" routerLinkActive="active" class="nav-link">
+                        <i class="fa fa-user-o nav-icon"></i>
+                        <p>Supplier Creation</p>
+                      </a>
+                    </li>  
+                    <li class="nav-item">
+                        <a routerLink="/customercreation" #customercreation="routerLinkActive" routerLinkActive="active" class="nav-link">
+                          <i class="fa fa-user-o nav-icon"></i>
+                          <p>Customer Creation</p>
+                        </a>
+                      </li>            
+                  </ul>
+                </li>
+                <li *ngIf="_userService.roleMatch(['Administrator'])" class="nav-item has-treeview menu-open">
+                  <a  class="nav-link success" [ngClass]="{'active': validationRules.isActive || (templateManagement.isActive) }">
+                    <i class="nav-icon fa fa-edit"></i>
+                    <p>
+                     Administration
+                      <i class="fa fa-angle-left right"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a routerLink="/validationrules" #validationRules="routerLinkActive" routerLinkActive="active" class="nav-link">
+                        <i class="fa fa-user-o nav-icon"></i>
+                        <p>Validation Rules</p>
+                      </a>
+                    </li>  
+                    <li class="nav-item">
+                        <a routerLink="/templatemanagement" #templateManagement="routerLinkActive" routerLinkActive="active" class="nav-link">
+                          <i class="fa fa-user-o nav-icon"></i>
+                          <p>Template Management</p>
+                        </a>
+                      </li>            
+                  </ul>
+                </li>
+                <li *ngIf="user.IsSuperAdmin" class="nav-item has-treeview menu-open">
           <a  class="nav-link" routerLinkActive="active" [ngClass]="{'active': usersActive.isActive || (createUserActive.isActive) }">
             <i class="nav-icon fa fa-edit"></i>
             <p>
@@ -51,29 +98,7 @@
           </ul>
         </li>
 
-        <li *ngIf="_userService.roleMatch(['Administrator'])" class="nav-item has-treeview menu-open">
-          <a  class="nav-link" [ngClass]="{'active': validationRules.isActive || (templateManagement.isActive) }">
-            <i class="nav-icon fa fa-edit"></i>
-            <p>
-             Administration
-              <i class="fa fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a routerLink="/validationrules" #validationRules="routerLinkActive" routerLinkActive="active" class="nav-link">
-                <i class="fa fa-user-o nav-icon"></i>
-                <p>Validation Rules</p>
-              </a>
-            </li>  
-            <li class="nav-item">
-                <a routerLink="/templatemanagement" #templateManagement="routerLinkActive" routerLinkActive="active" class="nav-link">
-                  <i class="fa fa-user-o nav-icon"></i>
-                  <p>Template Management</p>
-                </a>
-              </li>            
-          </ul>
-        </li>
+       
 
 
       </ul>

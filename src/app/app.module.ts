@@ -41,6 +41,10 @@ import { TemplateManagementComponent } from './components/admin/template-managem
 import { SelectionCriteriaComponent } from './components/common/selection-criteria/selection-criteria.component';
 import { TemplateManagementService } from './services/template-management.service';
 import { OrganizationService } from './services/organization.service';
+import { SupplierCreationComponent } from './components/Supplier/supplier-creation/supplier-creation.component';
+import { ControlGeneratorComponent } from './components/common/control-generator/control-generator.component';
+import { CustomerCreationComponent } from './components/Customer/customer-creation/customer-creation.component';
+import { UpperCaseTextDirective } from './directives/upper-case-text.directive';
  
 
 // export function authorizationServiceFactory(injector: Injector) {
@@ -67,7 +71,11 @@ import { OrganizationService } from './services/organization.service';
     ValidationRuleToOrgChartArrayPipe,
     GetUserAvatarSrcPipe,
     TemplateManagementComponent,
-    SelectionCriteriaComponent
+    SelectionCriteriaComponent,
+    SupplierCreationComponent,
+    ControlGeneratorComponent,
+    CustomerCreationComponent,
+    UpperCaseTextDirective
      
   ],
   imports: [

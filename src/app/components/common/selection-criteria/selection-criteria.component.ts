@@ -20,6 +20,8 @@ export class SelectionCriteriaComponent implements OnInit {
   @Input()
   selectionCriteria: SelectionCriteria;
   @Input()
+  withProcessType: boolean = true;
+  @Input()
   withRequestType: boolean = true;
   @Input()
   withOrganization: boolean = true;
@@ -36,6 +38,8 @@ export class SelectionCriteriaComponent implements OnInit {
   constructor(private _companyService: CompanyService, private _organizationService: OrganizationService, private _userService: UserService) { }
 
   ngOnInit() {
+    if (this.selectionCriteria.ProcessTypeId != -1)
+      this.processTypeChanged();
   }
 
 
@@ -62,7 +66,7 @@ export class SelectionCriteriaComponent implements OnInit {
   }
   loadOrganizations() {
     if (this.selectionCriteria.ProcessTypeId) {
-      this._organizationService.getOrganizations(this._userService.getBusinessUnit().Id,this.selectionCriteria.ProcessTypeId).subscribe(data => {
+      this._organizationService.getOrganizations(this._userService.getBusinessUnit().Id, this.selectionCriteria.ProcessTypeId).subscribe(data => {
         this.organizations = data;
         this.selectionCriteria.Organization = this.organizations.find(e => e.Id == -1);
       });

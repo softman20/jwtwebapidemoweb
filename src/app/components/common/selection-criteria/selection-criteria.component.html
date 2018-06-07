@@ -1,7 +1,7 @@
 <form class="form-horizontal" #formValidationRules="ngForm">
 <div class="card-body">
     <div class="row">
-      <div class="form-group col-sm-4">
+      <div *ngIf="withProcessType" class="form-group col-sm-4">
         <label for="processType" class="control-label">Proccess Type
           <b class="text-danger" *ngIf="processType.touched && processType.invalid">*</b>
         </label>

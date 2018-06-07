@@ -1,0 +1,56 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">
+              Supplier Creation
+            </h3>
+          </div>
+          <!-- selection criteria   -->
+          <app-selection-criteria [selectionCriteria]="selectionCriteria" [withProcessType]="false" [withRequestType]="false" (onValidationRuleSelectionChange)="onValidationRuleSelectionChange()"></app-selection-criteria>
+          <!-- selection criteria   -->
+
+          <div class="card-footer">
+
+
+            <button [disabled]="!selectionCriteria.IsValid()" *ngIf="validationRule?.ValidationRuleUserRoles==null" (click)="getTemplateControls()"
+              type="submit" class="btn btn-primary ml-1">
+              <i class="fa fa-plus"></i> Submit</button>
+            <button [disabled]="!selectionCriteria.IsValid()" *ngIf="validationRule?.ValidationRuleUserRoles==null" (click)="showSendInvitationDialog()"
+              type="submit" class="btn btn-info float-right">
+              <i class="fa fa-envelope-o"></i> Send Invitation</button>
+
+          </div>
+        </div>
+        <!-- controls -->
+        <div *ngIf="templateControls?.length" class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">
+              General Information
+            </h3>
+          </div>
+          <form #formSupplierCreation="ngForm">
+            <div class="card-body">
+              <ng-container *ngFor="let control of templateControls;let i=index">
+                <div *ngIf="control.TemplateControlConfig.Display" class="form-group">                 
+                  <label>{{control.Label}}</label>
+                  <app-control-generator [control]="control" name="control{{i}}" #control{{i}}="ngModel"  [(ngModel)]="control.Value" ngDefaultControl [required]="control.TemplateControlConfig.Mandatory"></app-control-generator>
+             
+                </div>
+              </ng-container>
+            </div>
+          </form>
+            <div class="card-footer text-center">            
+              <button [disabled]="!formSupplierCreation.valid" type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit</button>
+              <button [disabled]="!formSupplierCreation.valid" type="submit" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</button>
+              <button [disabled]="!formSupplierCreation.valid" type="submit" class="btn btn-info"><i class="fa fa-upload"></i> Upload Files</button>
+            </div>
+        
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

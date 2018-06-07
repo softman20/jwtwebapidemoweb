@@ -15,11 +15,18 @@ export class SelectionCriteria {
     /**
      *
      */
-    constructor(businessUnit?: BusinessUnit) {
+    constructor(businessUnit?: BusinessUnit, processTypeId?: number, requestTypeId?: number) {
         if (businessUnit != null)
             this.BusinessUnit = businessUnit;
+        if (processTypeId != null)
+            this.ProcessTypeId = processTypeId;
+        if (requestTypeId != null)
+            this.RequestTypeId = requestTypeId;
     }
 
+    IsValid() {
+        return this.ProcessTypeId != null && this.CompanyCode != null && this.AccountGroup != null && this.Organization != null;
+    }
 }
 
 

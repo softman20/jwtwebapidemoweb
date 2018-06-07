@@ -1,0 +1,5 @@
+<input *ngIf="control.TemplateControlConfig.ControlTypeId==1" type="text" [placeholder]="control.Label" [name]="control.Label" UpperCaseText="{{control.TemplateControlConfig.Capital}}" class="form-control" >
+<div  *ngIf="control.TemplateControlConfig.ControlTypeId==2">
+<p-dropdown    name="control.Label"
+[options]="control.ControlMasterData" inputId="Id" optionLabel="Name" [filter]="true" placeholder="Select {{control.Label}}"></p-dropdown>
+</div>

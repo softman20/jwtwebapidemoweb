@@ -16,4 +16,6 @@ static allRoles:Master[]=[
     {Id:Roles.Accountant,Name:'Accountant'},
     {Id:Roles.Viewer,Name:'Viewer'}
 ];
+
+static controlTypes:SelectItem[] = [{ label: 'Input Text', value: '1', icon: 'fa fa-users' }, { label: 'DropDown List', value: '2', icon: 'fa fa-user' }];
 }

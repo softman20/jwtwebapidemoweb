@@ -12,6 +12,8 @@ import { ForbiddenComponent } from "./components/forbidden/forbidden.component";
 import { UserResolve } from "./resolvers/user.resolve";
 import { ValidationRulesComponent } from "./components/admin/validation-rules/validation-rules.component";
 import { TemplateManagementComponent } from "./components/admin/template-management/template-management.component";
+import { SupplierCreationComponent } from "./components/Supplier/supplier-creation/supplier-creation.component";
+import { CustomerCreationComponent } from "./components/Customer/customer-creation/customer-creation.component";
 
 const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -24,9 +26,10 @@ const appRoutes: Routes = [
             { path: 'users', component: UserListComponent },
             { path: 'sign-up', component: SignUpComponent,canActivate: [AuthGuard], data: {/* roles: ['Administrator']*/ } },
             { path: 'user/:id', component: SignUpComponent },
-            {path:'validationrules',component:ValidationRulesComponent},
-            {path:'templatemanagement',component:TemplateManagementComponent}
-
+            { path:'validationrules',component:ValidationRulesComponent},
+            { path:'templatemanagement',component:TemplateManagementComponent},
+            { path:'suppliercreation',component:SupplierCreationComponent},
+            { path:'customercreation',component:CustomerCreationComponent}
         ]
     },
     { path: '**', redirectTo: '' }

@@ -4,8 +4,9 @@ import { TemplateSelectionRule } from '../../../models/template-selection-rule';
 import { TemplateManagementService } from '../../../services/template-management.service';
 import { TemplateControl } from '../../../models/template-control';
 import { UserService } from '../../../services/user.service';
-import { ConfirmationService } from 'primeng/primeng';
+import { ConfirmationService, SelectItem } from 'primeng/primeng';
 import { ToastrService } from 'ngx-toastr';
+import { StaticDataModels } from '../../../dataModels/staticDataModels';
 
 @Component({
   selector: 'app-template-management',
@@ -15,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 export class TemplateManagementComponent implements OnInit {
   templateSelectionRule: TemplateSelectionRule = new TemplateSelectionRule(this._userService.getBusinessUnit());
   templateControls:TemplateControl[]=[];
-
+controlTypes:SelectItem[]=StaticDataModels.controlTypes;
   constructor(private _templateManagementService:TemplateManagementService, private toastr: ToastrService,private _userService: UserService,private confirmationService: ConfirmationService) { }
 
   ngOnInit() {
