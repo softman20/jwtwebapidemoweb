@@ -11,5 +11,7 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  test(ngProgressBar){
+    console.log();
+  }
 }

@@ -35,8 +35,8 @@
             <div class="card-body">
               <ng-container *ngFor="let control of templateControls;let i=index">
                 <div *ngIf="control.TemplateControlConfig.Display" class="form-group">                 
-                  <label>{{control.Label}}</label>
-                  <app-control-generator [control]="control" name="control{{i}}" #control{{i}}="ngModel"  [(ngModel)]="control.Value" ngDefaultControl [required]="control.TemplateControlConfig.Mandatory"></app-control-generator>
+                  <label>{{control.Label}}   <b class="text-danger" *ngIf="control.TemplateControlConfig.Mandatory">*</b></label>
+                  <app-control-generator [control]="control" name="control{{i}}" #control{{i}}="ngModel"  [(ngModel)]="control.Value"   ngDefaultControl [required]="control.TemplateControlConfig.Mandatory"></app-control-generator>
              
                 </div>
               </ng-container>

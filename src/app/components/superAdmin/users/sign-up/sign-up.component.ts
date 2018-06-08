@@ -69,10 +69,12 @@ export class SignUpComponent extends BaseComponent implements OnInit {
   }
 
   getOrganizations() {
+   
     this._organizationService.getOrganizations(this.authorization.BusinessUnit.Id, this.authorization.ProcessTypeId).subscribe(data => {
       this.organizations = data;
-      this.authorization.Organization = this.organizations.find(e => e.Id == -1);
+      this.authorization.Organization =data[0];
     });
+ 
   }
   processTypeChanged() {
     this.getOrganizations();
@@ -198,8 +200,17 @@ export class SignUpComponent extends BaseComponent implements OnInit {
   checkIfAuthorizationExist(): boolean {
     let exist: boolean = false;
 
+    if (this.authorization.ProcessTypeId == -1) {
+      if (this.user.Authorizations.find(e =>
+        (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id == -1)
+        && (e.CompanyCode.Id == this.authorization.CompanyCode.Id || e.CompanyCode.Id == -1)
+         && (e.ProcessTypeId == -1)
+        && (e.Organization.Id == this.authorization.Organization.Id || e.Organization.Id == -1)
+        &&  e.Role.Id == this.authorization.Role.Id))
+        exist = true;
+    }
     //check if exist Organization level
-    if (this.authorization.ProcessTypeId != -1) {
+    else if (this.authorization.ProcessTypeId != -1) {
       if (this.user.Authorizations.find(e =>
         (e.BusinessUnit.Id == this.authorization.BusinessUnit.Id || e.BusinessUnit.Id == -1)
         && (e.CompanyCode.Id == this.authorization.CompanyCode.Id || e.CompanyCode.Id == -1)
@@ -271,7 +282,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
         e.CompanyCode.Id == this.authorization.CompanyCode.Id &&
         e.BusinessUnit.Id == this.authorization.BusinessUnit.Id && e.Role.Id == this.authorization.Role.Id);
     }
-    else if (this.authorization.Organization.Id == -1) {
+    else if (!this.authorization.Organization || this.authorization.Organization.Id == -1) {
       subAuthorizaitons = this.user.Authorizations.filter(e =>
         e.ProcessTypeId== this.authorization.ProcessTypeId &&
         e.CompanyCode.Id == this.authorization.CompanyCode.Id &&

@@ -11,7 +11,12 @@
         <!-- /.content-header -->
       <div class="mt-5">&nbsp;</div>
         <!-- Main content -->
-        <ng-progress ></ng-progress>
+       
+        <ng-progress #ngProgressBar></ng-progress>
+     
+        <div class="block-screen" *ngIf="ngProgressBar.ngProgress.progress!=0">
+          <div class="">
+          <p-progressSpinner></p-progressSpinner></div>  <div class=""><b>Please wait...</b></div></div>
         <p-confirmDialog></p-confirmDialog>
         <div id="divContent">
     <router-outlet></router-outlet>

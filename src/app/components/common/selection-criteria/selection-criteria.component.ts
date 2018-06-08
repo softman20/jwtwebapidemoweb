@@ -40,6 +40,8 @@ export class SelectionCriteriaComponent implements OnInit {
   ngOnInit() {
     if (this.selectionCriteria.ProcessTypeId != -1)
       this.processTypeChanged();
+
+     
   }
 
 
@@ -60,6 +62,9 @@ export class SelectionCriteriaComponent implements OnInit {
         (companyData) => {
           this.companies = companyData;
           this.selectionCriteria.CompanyCode = null;
+        //   let com =this.companies.find(e=>e.Id==2);
+        //  // com.Name='G01 - SGG BENELUX S.A.';
+        //   this.selectionCriteria.CompanyCode=com;
         }
       );
     }

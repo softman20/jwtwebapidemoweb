@@ -35,9 +35,11 @@ export class AuthService implements HttpInterceptor {
     if (err instanceof HttpErrorResponse) {
               switch (err.status) {
                 case 400:
-                case 401:
-              
+                case 401:              
                   return this.refreshToken(req, next);
+                  case 0:{
+                    this._authenticationService.logout();
+                  }
               }
             } else {
              // return Observable.throw(error);

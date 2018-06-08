@@ -62,21 +62,23 @@
                     </p-column>
                     <p-column field="SapTable" header="SapTable" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                     <p-column field="SapField" header="SapField" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
-                    <p-column field="TemplateControlConfig.ControlTypeId" header="ControlTypeId">
+                    <p-column field="TemplateControlConfig.ControlTypeId" header="Control Type">
                         <ng-template let-templateControls="rowData" pTemplate="body">
                             <p-selectButton [disabled]="!templateControls.ControlMasterData.length" name="controlType"   (onChange)="processTypeChanged()" [options]="controlTypes"
                                 #controlType="ngModel" [(ngModel)]="templateControls.TemplateControlConfig.ControlTypeId" required></p-selectButton>
                         </ng-template>
                     </p-column>
-                    <p-column field="TemplateControlConfig.DefaultValue" header="DefaultValue">
+                    <p-column field="TemplateControlConfig.DefaultValue" header="Default Value">
                         <ng-template let-templateControls="rowData" pTemplate="body">
                             <input *ngIf="templateControls.TemplateControlConfig.ControlTypeId==1" type="text" name="DefaultValue" #DefaultValue="ngModel" [(ngModel)]="templateControls.TemplateControlConfig.DefaultValue"
                                 required class="form-control" placeholder="DefaultValue">
-
                                
-                                        <p-dropdown *ngIf="templateControls.TemplateControlConfig.ControlTypeId==2"   name="DefaultValue" 
-                                        [options]="templateControls.ControlMasterData" inputId="Id" optionLabel="Name" placeholder="Default Value" [filter]="true"></p-dropdown>
+                      <p-dropdown *ngIf="templateControls.TemplateControlConfig.ControlTypeId==2"   name="DefaultValue" [style]="{'width':'120px'}"
+                       [options]="templateControls.ControlMasterData" inputId="Id" optionLabel="Name" placeholder="Default Value" [filter]="true"></p-dropdown>
                                
+                                <!-- <select [(ngModel)]="templateControls.TemplateControlConfig.DefaultValue">
+                                    <option *ngFor="let c of templateControls.ControlMasterData" [ngValue]="c.Id">{{c.Name}}</option>
+                                  </select> -->
                         </ng-template>
                     </p-column>
                     <p-footer>
