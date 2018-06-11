@@ -1,7 +1,7 @@
 <form class="form-horizontal" #formValidationRules="ngForm">
 <div class="card-body">
     <div class="row">
-      <div *ngIf="withProcessType" class="form-group col-sm-4">
+      <div *ngIf="withProcessType" class="form-group col-sm-12">
         <label for="processType" class="control-label">Proccess Type
           <b class="text-danger" *ngIf="processType.touched && processType.invalid">*</b>
         </label>
@@ -23,7 +23,7 @@
           {{selectionCriteria?.CompanyCode?.Id}}
         </div>
       </div>
-      <div class="form-group col-sm-4">
+      <div class="form-group col-sm-12">
           <label for="" class=" control-label">Account Group</label>
           <div class=" ">
             <p-dropdown appendTo="body" [options]="accountGroups" (onChange)="validationRuleSelectionChanged()" #companyCode="ngModel"
@@ -35,7 +35,7 @@
     </div>
     <div class="row">
      
-      <div *ngIf="withRequestType" class="form-group col-sm-4">
+      <div *ngIf="withRequestType" class="form-group col-sm-12">
         <label for="requestType" class=" control-label">Request Type
           <b class="text-danger" *ngIf="requestType.touched && requestType.invalid">*</b>
         </label>
@@ -46,7 +46,7 @@
           <span class="text-danger" *ngIf="requestType.touched && requestType.invalid">Request Type is required</span>
         </div>
       </div>
-      <div class="form-group col-sm-4">
+      <div class="form-group col-sm-12">
           <label for="organization" class=" control-label">{{selectionCriteria.ProcessTypeId==1 ? 'Purchasing':selectionCriteria.ProcessTypeId==2?'Sales':''}}  Organization
             <b class="text-danger" *ngIf="organization.touched && organization.invalid">*</b>
           </label>

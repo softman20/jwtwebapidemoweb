@@ -45,8 +45,9 @@ import { SupplierCreationComponent } from './components/Supplier/supplier-creati
 import { ControlGeneratorComponent } from './components/common/control-generator/control-generator.component';
 import { CustomerCreationComponent } from './components/Customer/customer-creation/customer-creation.component';
 import { UpperCaseTextDirective } from './directives/upper-case-text.directive';
+import { MasterToValuePipe } from './pipes/master-to-value.pipe';
  
-
+ 
 // export function authorizationServiceFactory(injector: Injector) {
 //   return new AuthService(injector);
 // }
@@ -75,7 +76,8 @@ import { UpperCaseTextDirective } from './directives/upper-case-text.directive';
     SupplierCreationComponent,
     ControlGeneratorComponent,
     CustomerCreationComponent,
-    UpperCaseTextDirective
+    UpperCaseTextDirective,
+    MasterToValuePipe
      
   ],
   imports: [

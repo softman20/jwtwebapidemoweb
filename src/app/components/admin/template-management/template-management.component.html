@@ -21,11 +21,12 @@
                             class="btn btn-danger float-right">Delete</button>
                     </div>
                 </div>
-
+               
                 <p-dataTable *ngIf="templateControls?.length || !templateControls" [value]="templateControls" emptyMessage="No Template Configuration for this selection">
                     <p-column field="Label" header="label" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
                     <p-column header="Display">
                             <ng-template let-templateControls="rowData" pTemplate="body">
+                                    <span pDraggable="eventos" (onDragStart)="dragStart($event)">drag</span>
                                 <p-inputSwitch [(ngModel)]="templateControls.TemplateControlConfig.Display"></p-inputSwitch>
                             </ng-template>
                         </p-column>
@@ -70,15 +71,16 @@
                     </p-column>
                     <p-column field="TemplateControlConfig.DefaultValue" header="Default Value">
                         <ng-template let-templateControls="rowData" pTemplate="body">
-                            <input *ngIf="templateControls.TemplateControlConfig.ControlTypeId==1" type="text" name="DefaultValue" #DefaultValue="ngModel" [(ngModel)]="templateControls.TemplateControlConfig.DefaultValue"
-                                required class="form-control" placeholder="DefaultValue">
+                            <input *ngIf="templateControls.TemplateControlConfig.ControlTypeId==1" type="text" name="DefaultValue" #DefaultValue="ngModel" 
+                            [(ngModel)]="templateControls.TemplateControlConfig.DefaultValue" required class="form-control" placeholder="DefaultValue">
                                
-                      <p-dropdown *ngIf="templateControls.TemplateControlConfig.ControlTypeId==2"   name="DefaultValue" [style]="{'width':'120px'}"
-                       [options]="templateControls.ControlMasterData" inputId="Id" optionLabel="Name" placeholder="Default Value" [filter]="true"></p-dropdown>
+                      <p-dropdown *ngIf="templateControls.TemplateControlConfig.ControlTypeId==2" [(ngModel)]="templateControls.TemplateControlConfig.DefaultValue" name="DefaultValue" [style]="{'width':'120px'}"
+                       [options]="templateControls.ControlMasterData | masterToValue" placeholder="Default Value" [filter]="true"></p-dropdown>
                                
                                 <!-- <select [(ngModel)]="templateControls.TemplateControlConfig.DefaultValue">
                                     <option *ngFor="let c of templateControls.ControlMasterData" [ngValue]="c.Id">{{c.Name}}</option>
                                   </select> -->
+                                  {{templateControls.TemplateControlConfig.DefaultValue}}
                         </ng-template>
                     </p-column>
                     <p-footer>
