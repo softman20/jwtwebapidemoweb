@@ -43,7 +43,7 @@
             </div>
           </form>
             <div class="card-footer text-center">            
-              <button [disabled]="!formSupplierCreation.valid" type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit</button>
+              <button (click)="submitSupplierForm()" [disabled]="!formSupplierCreation.valid" type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Submit</button>
               <button [disabled]="!formSupplierCreation.valid" type="submit" class="btn btn-success"><i class="fa fa-floppy-o"></i> Save</button>
               <button [disabled]="!formSupplierCreation.valid" type="submit" class="btn btn-info"><i class="fa fa-upload"></i> Upload Files</button>
             </div>

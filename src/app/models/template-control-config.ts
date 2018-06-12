@@ -8,6 +8,7 @@ export class TemplateControlConfig {
     AlterableApprover2     :boolean;
     AlterableApprover3     :boolean;
     DefaultValue           :string;     
+    DisplayOrder:number;
     ControlTypeId:string;  
     TemplateId             :number; 
     TemplateControlId      :number; 

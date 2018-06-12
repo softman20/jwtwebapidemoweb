@@ -9,7 +9,7 @@ import { TestComponent } from './components/test/test.component';
 import { NavbarComponent } from './components/appLayout/navbar/navbar.component';
 import { SidebarComponent } from './components/appLayout/sidebar/sidebar.component';
 import { TablesComponent } from './components/tables/tables.component';
-import { DataTableModule, SliderModule,CheckboxModule, DropdownModule, MultiSelectModule,ProgressSpinnerModule, ConfirmationService, ConfirmDialogModule, AutoCompleteModule, SelectButtonModule, InputSwitchModule, DialogModule, OrganizationChartModule, ToggleButtonModule } from 'primeng/primeng';
+import { DataTableModule, SliderModule,CheckboxModule, DropdownModule, MultiSelectModule,ProgressSpinnerModule, ConfirmationService, ConfirmDialogModule, AutoCompleteModule, SelectButtonModule, InputSwitchModule, DialogModule, OrganizationChartModule, ToggleButtonModule, InplaceModule, InputMaskModule } from 'primeng/primeng';
 import { CarService } from './services/car.service';
 import { RouterModule, Routes } from '@angular/router';
 import { SignUpComponent } from './components/superAdmin/users/sign-up/sign-up.component';
@@ -46,6 +46,7 @@ import { ControlGeneratorComponent } from './components/common/control-generator
 import { CustomerCreationComponent } from './components/Customer/customer-creation/customer-creation.component';
 import { UpperCaseTextDirective } from './directives/upper-case-text.directive';
 import { MasterToValuePipe } from './pipes/master-to-value.pipe';
+import { OnlyNumberDirective } from './directives/only-number.directive';
  
  
 // export function authorizationServiceFactory(injector: Injector) {
@@ -77,7 +78,8 @@ import { MasterToValuePipe } from './pipes/master-to-value.pipe';
     ControlGeneratorComponent,
     CustomerCreationComponent,
     UpperCaseTextDirective,
-    MasterToValuePipe
+    MasterToValuePipe,
+    OnlyNumberDirective
      
   ],
   imports: [
@@ -102,7 +104,9 @@ import { MasterToValuePipe } from './pipes/master-to-value.pipe';
     InputSwitchModule,
     DialogModule,
     OrganizationChartModule,
-    ToggleButtonModule
+    ToggleButtonModule,
+    InplaceModule,
+    InputMaskModule
   ],
   providers: [CarService, UserService,ConfirmationService,AuthGuard,HomeGuard,AuthenticationService,
     BusinessUnitService,CompanyService,ValidationRuleService,TemplateManagementService,OrganizationService,

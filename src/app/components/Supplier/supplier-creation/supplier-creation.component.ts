@@ -11,22 +11,26 @@ import { TemplateManagementService } from '../../../services/template-management
   styleUrls: ['./supplier-creation.component.css']
 })
 export class SupplierCreationComponent implements OnInit {
-  selectionCriteria:SelectionCriteria= new SelectionCriteria(this._userService.getBusinessUnit(),1,1);
-  templateControls:TemplateControl[]=[];
-  constructor(private _templateManagementService:TemplateManagementService,private _userService: UserService) { }
+  selectionCriteria: SelectionCriteria = new SelectionCriteria(this._userService.getBusinessUnit(), 1, 1);
+  templateControls: TemplateControl[] = [];
+  constructor(private _templateManagementService: TemplateManagementService, private _userService: UserService) { }
 
   ngOnInit() {
-   
+
   }
 
-  onValidationRuleSelectionChange(){
+  onValidationRuleSelectionChange() {
   }
 
-  getTemplateControls(){
-  //get template controls
-  this._templateManagementService.getTemplateControls(this.selectionCriteria).subscribe(data=>{
-    this.templateControls=data;
+  getTemplateControls() {
+    //get template controls
+    this._templateManagementService.getTemplateControls(this.selectionCriteria).subscribe(data => {
+      this.templateControls = data;
+    });
   }
-);
+
+  submitSupplierForm(){
+    //save supplier informations
+    
   }
 }

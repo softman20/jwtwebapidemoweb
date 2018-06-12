@@ -57,4 +57,14 @@ controlTypes:SelectItem[]=StaticDataModels.controlTypes;
       }
     });
   }
+
+  sortOrderChanged(dtTemplateControls){     
+    
+     this.templateControls.forEach(element => {
+       if(!element.TemplateControlConfig.DisplayOrder)
+       element.TemplateControlConfig.DisplayOrder=0;
+     });
+     dtTemplateControls.reset();
+     dtTemplateControls.sortField="TemplateControlConfig.DisplayOrder";
+  }
 }

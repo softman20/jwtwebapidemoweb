@@ -22,11 +22,25 @@
                     </div>
                 </div>
                
-                <p-dataTable *ngIf="templateControls?.length || !templateControls" [value]="templateControls" emptyMessage="No Template Configuration for this selection">
-                    <p-column field="Label" header="label" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
+                <p-dataTable #dtTemplateControls *ngIf="templateControls?.length || !templateControls" sortField="TemplateControlConfig.DisplayOrder"  [value]="templateControls" emptyMessage="No Template Configuration for this selection">
+            <p-column field="TemplateControlConfig.DisplayOrder" header="Display Order" [filter]="true" filterPlaceholder="Search">
+                <ng-template let-templateControls="rowData" pTemplate="body">
+                 <!-- <input type="text" [name]="DisplayOrder" [(ngModel)]="templateControls.TemplateControlConfig.DisplayOrder" class="form-control" > -->
+                 <p-inplace (onDeactivate)="sortOrderChanged(dtTemplateControls)" closable="closable" [style]="{'width':'50px'}">
+                        <span pInplaceDisplay>
+                           {{templateControls.TemplateControlConfig.DisplayOrder}}
+                        </span>
+                        <span pInplaceContent>
+                                <input type="text" width="50" OnlyNumber="true" [name]="DisplayOrder" [(ngModel)]="templateControls.TemplateControlConfig.DisplayOrder" class="form-control" pInputText  >
+                         
+                        </span>
+                    </p-inplace>
+                </ng-template>            
+            </p-column>
+                    <p-column field="Label" header="label" [filter]="true" filterPlaceholder="Search" ></p-column>
                     <p-column header="Display">
                             <ng-template let-templateControls="rowData" pTemplate="body">
-                                    <span pDraggable="eventos" (onDragStart)="dragStart($event)">drag</span>
+                                   
                                 <p-inputSwitch [(ngModel)]="templateControls.TemplateControlConfig.Display"></p-inputSwitch>
                             </ng-template>
                         </p-column>
@@ -61,8 +75,8 @@
                             <p-inputSwitch [(ngModel)]="templateControls.TemplateControlConfig.AlterableApprover3"></p-inputSwitch>
                         </ng-template>
                     </p-column>
-                    <p-column field="SapTable" header="SapTable" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
-                    <p-column field="SapField" header="SapField" [filter]="true" filterPlaceholder="Search" [sortable]="true"></p-column>
+                    <p-column field="SapTable" header="SapTable" [filter]="true" filterPlaceholder="Search"  ></p-column>
+                    <p-column field="SapField" header="SapField" [filter]="true" filterPlaceholder="Search"  ></p-column>
                     <p-column field="TemplateControlConfig.ControlTypeId" header="Control Type">
                         <ng-template let-templateControls="rowData" pTemplate="body">
                             <p-selectButton [disabled]="!templateControls.ControlMasterData.length" name="controlType"   (onChange)="processTypeChanged()" [options]="controlTypes"
@@ -71,16 +85,16 @@
                     </p-column>
                     <p-column field="TemplateControlConfig.DefaultValue" header="Default Value">
                         <ng-template let-templateControls="rowData" pTemplate="body">
-                            <input *ngIf="templateControls.TemplateControlConfig.ControlTypeId==1" type="text" name="DefaultValue" #DefaultValue="ngModel" 
+                            <input *ngIf="templateControls.TemplateControlConfig.ControlTypeId==1" style="width:100px" type="text" name="DefaultValue" #DefaultValue="ngModel" 
                             [(ngModel)]="templateControls.TemplateControlConfig.DefaultValue" required class="form-control" placeholder="DefaultValue">
                                
-                      <p-dropdown *ngIf="templateControls.TemplateControlConfig.ControlTypeId==2" [(ngModel)]="templateControls.TemplateControlConfig.DefaultValue" name="DefaultValue" [style]="{'width':'120px'}"
+                      <p-dropdown *ngIf="templateControls.TemplateControlConfig.ControlTypeId==2" [(ngModel)]="templateControls.TemplateControlConfig.DefaultValue" name="DefaultValue" [style]="{'width':'100px'}"
                        [options]="templateControls.ControlMasterData | masterToValue" placeholder="Default Value" [filter]="true"></p-dropdown>
                                
                                 <!-- <select [(ngModel)]="templateControls.TemplateControlConfig.DefaultValue">
                                     <option *ngFor="let c of templateControls.ControlMasterData" [ngValue]="c.Id">{{c.Name}}</option>
                                   </select> -->
-                                  {{templateControls.TemplateControlConfig.DefaultValue}}
+                                 
                         </ng-template>
                     </p-column>
                     <p-footer>
