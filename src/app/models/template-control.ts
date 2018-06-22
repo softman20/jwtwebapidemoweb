@@ -7,6 +7,8 @@ export class TemplateControl {
     SapTable:string;
     SapField:string;
     Value:string;
+    HeaderGroup:Master;
+    HeaderGroupId:number;
     ProcessTypeId:number;
     BUId:number;
     ControlMasterData:Master[];

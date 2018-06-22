@@ -47,6 +47,7 @@ import { CustomerCreationComponent } from './components/Customer/customer-creati
 import { UpperCaseTextDirective } from './directives/upper-case-text.directive';
 import { MasterToValuePipe } from './pipes/master-to-value.pipe';
 import { OnlyNumberDirective } from './directives/only-number.directive';
+import { GroupByPipe } from './pipes/group-by.pipe';
  
  
 // export function authorizationServiceFactory(injector: Injector) {
@@ -79,7 +80,8 @@ import { OnlyNumberDirective } from './directives/only-number.directive';
     CustomerCreationComponent,
     UpperCaseTextDirective,
     MasterToValuePipe,
-    OnlyNumberDirective
+    OnlyNumberDirective,
+    GroupByPipe
      
   ],
   imports: [
